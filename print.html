@@ -47,13 +47,13 @@ body{
 }
 
 .qr{
-    width:90px;
-    height:90px;
+    width:120px;
+    height:120px;
     margin-left:15px;
     flex-shrink:0;
 }
 
-.qr canvas{width:90px!important;height:90px!important}
+.qr svg{width:120px!important;height:120px!important}
 
 .item-count{
     font-size:13px;
@@ -359,22 +359,23 @@ function makeQR(text) {
     qr.addData(text);
     qr.make();
     var size = qr.getModuleCount();
-    var canvas = document.createElement('canvas');
     var scale = 4;
-    canvas.width = size * scale;
-    canvas.height = size * scale;
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#000';
+    var totalSize = size * scale;
+    var rects = '';
     for (var r = 0; r < size; r++) {
         for (var c = 0; c < size; c++) {
             if (qr.isDark(r, c)) {
-                ctx.fillRect(c * scale, r * scale, scale, scale);
+                rects += '<rect x="' + (c*scale) + '" y="' + (r*scale) + '" width="' + scale + '" height="' + scale + '"/>';
             }
         }
     }
-    return canvas;
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + totalSize + ' ' + totalSize + '" width="' + totalSize + '" height="' + totalSize + '">';
+    svg += '<rect width="100%" height="100%" fill="#fff"/>';
+    svg += '<g fill="#000">' + rects + '</g>';
+    svg += '</svg>';
+    var div = document.createElement('div');
+    div.innerHTML = svg;
+    return div.firstChild;
 }
 
 function condTag(cond) {
@@ -424,8 +425,8 @@ function generateAll() {
         page.innerHTML = html;
         pagesDiv.appendChild(page);
 
-        var qrCanvas = makeQR(url);
-        document.getElementById('qr-' + box).appendChild(qrCanvas);
+        var qrSvg = makeQR(url);
+        document.getElementById('qr-' + box).appendChild(qrSvg);
     }
 }
 
