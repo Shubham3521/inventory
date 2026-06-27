@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory - Box 3</title>
+
+<style>
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f8;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.box{
+    background:#fff;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+h1{
+    margin-top:0;
+}
+
+.summary{
+    display:flex;
+    gap:15px;
+    margin:20px 0;
+    flex-wrap:wrap;
+}
+
+.card{
+    flex:1;
+    min-width:180px;
+    background:#f8f9fa;
+    border-left:5px solid #0d6efd;
+    border-radius:8px;
+    padding:15px;
+}
+
+.card h2{
+    margin:0;
+    font-size:16px;
+}
+
+.card p{
+    font-size:24px;
+    font-weight:bold;
+    margin:10px 0 0;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+    background:#0d6efd;
+    color:white;
+    padding:10px;
+    text-align:left;
+}
+
+td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+}
+
+tr:hover{
+    background:#f8f9fa;
+}
+
+.badge{
+    color:#fff;
+    padding:4px 10px;
+    border-radius:15px;
+    font-size:12px;
+}
+
+.working{
+    background:#28a745;
+}
+
+.broken{
+    background:#dc3545;
+}
+
+.footer{
+    text-align:center;
+    margin-top:30px;
+    color:#777;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="box">
+
+<h1>📦 Box 3</h1>
+
+<p><strong>Description:</strong> Electrical Accessories, Sports, Games & Miscellaneous</p>
+
+<div class="summary">
+
+<div class="card">
+<h2>Total Items</h2>
+<p>24</p>
+</div>
+
+<div class="card">
+<h2>Working</h2>
+<p>23</p>
+</div>
+
+<div class="card">
+<h2>Broken</h2>
+<p>1</p>
+</div>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>#</th>
+<th>Item</th>
+<th>Category</th>
+<th>Condition</th>
+<th>Notes</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>1</td>
+<td>Big TV Remote (55-inch TV)</td>
+<td>Electronics</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>Multiplug (Without Wire)</td>
+<td>Electrical</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>Swimming Goggles</td>
+<td>Sports</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>Big Round Transparent Tape</td>
+<td>Supplies</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>Old Mobile Cover</td>
+<td>Mobile Accessory</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>Black Goggles</td>
+<td>Eyewear</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>Shubham's Broken Spectacles</td>
+<td>Eyewear</td>
+<td><span class="badge broken">Broken</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>Double Hole Punch Machine</td>
+<td>Stationery</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>3D Printer Single Spool Holder</td>
+<td>3D Printing</td>
+<td><span class="badge working">Working</span></td>
+<td>Removed when using AMS</td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>MTS USB Dongle</td>
+<td>Electronics</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>11</td>
+<td>Mobile Stand</td>
+<td>Mobile Accessory</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>12</td>
+<td>4-Point Multiplug</td>
+<td>Electrical</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>13</td>
+<td>3-Point Multiplug</td>
+<td>Electrical</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>14</td>
+<td>4-Point Multiplug</td>
+<td>Electrical</td>
+<td><span class="badge working">Working</span></td>
+<td>Second Unit</td>
+</tr>
+
+<tr>
+<td>15</td>
+<td>Sony Earphones</td>
+<td>Audio</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>16</td>
+<td>Gym Hand Grip</td>
+<td>Fitness</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>17</td>
+<td>Cloud Sek Men's Purse</td>
+<td>Personal Accessory</td>
+<td><span class="badge working">Working</span></td>
+<td>Conference Giveaway</td>
+</tr>
+
+<tr>
+<td>18</td>
+<td>Family Drama Card Game</td>
+<td>Games</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>19</td>
+<td>Playing Cards Deck</td>
+<td>Games</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>20</td>
+<td>Mafia City Cards</td>
+<td>Games</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>21</td>
+<td>Small Transparent Tape</td>
+<td>Supplies</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>22</td>
+<td>Velcro Strip</td>
+<td>Supplies</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>23</td>
+<td>3D Printed Wire Rounder</td>
+<td>3D Printing</td>
+<td><span class="badge working">Working</span></td>
+<td></td>
+</tr>
+
+<tr>
+<td>24</td>
+<td>3D Printed Cable Roll-Up Organizer</td>
+<td>3D Printing</td>
+<td><span class="badge working">Working</span></td>
+<td>Cable Management Tool</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="footer">
+Inventory Management • Box 3
+</div>
+
+</div>
+
+</body>
+</html>
+
+

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Inventory</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f8;
+    padding:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:28px;
+}
+
+/* Search */
+.search-wrap{
+    position:relative;
+    max-width:600px;
+    margin:0 auto 20px;
+}
+
+.search-wrap input{
+    width:100%;
+    padding:14px 20px 14px 45px;
+    font-size:16px;
+    border:2px solid #ddd;
+    border-radius:12px;
+    outline:none;
+    transition:border-color .2s;
+}
+
+.search-wrap input:focus{border-color:#0d6efd}
+
+.search-icon{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:18px;
+    color:#999;
+}
+
+/* Summary cards */
+.summary{
+    display:flex;
+    gap:12px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.card{
+    flex:1;
+    min-width:120px;
+    background:#fff;
+    border-left:5px solid #0d6efd;
+    border-radius:8px;
+    padding:12px 15px;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+
+.card h2{font-size:13px;color:#666;margin-bottom:4px}
+.card .num{font-size:26px;font-weight:bold}
+
+/* Toolbar: filters + actions */
+.toolbar{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+.box-tabs{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.box-tab{
+    padding:6px 14px;
+    border:2px solid #ddd;
+    border-radius:8px;
+    background:#fff;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:bold;
+    transition:all .15s;
+}
+
+.box-tab:hover{border-color:#0d6efd;color:#0d6efd}
+.box-tab.active{background:#0d6efd;color:#fff;border-color:#0d6efd}
+
+.cat-filter{
+    padding:8px 12px;
+    border:2px solid #ddd;
+    border-radius:8px;
+    font-size:13px;
+    outline:none;
+    background:#fff;
+    cursor:pointer;
+}
+
+.cat-filter:focus{border-color:#0d6efd}
+
+.toolbar-right{
+    margin-left:auto;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:8px 16px;
+    border:none;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:opacity .15s;
+}
+
+.btn:hover{opacity:.85}
+.btn-primary{background:#0d6efd;color:#fff}
+.btn-success{background:#28a745;color:#fff}
+.btn-outline{background:#fff;border:2px solid #ddd;color:#333}
+.btn-outline:hover{border-color:#0d6efd;color:#0d6efd}
+.btn-danger{background:#dc3545;color:#fff}
+.btn-warning{background:#ffc107;color:#000}
+.btn-sm{padding:4px 10px;font-size:12px}
+
+/* Table */
+.box-group{
+    background:#fff;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.box-group h2{margin-bottom:5px}
+.box-group .desc{color:#666;margin-bottom:15px;font-size:14px}
+
+table{width:100%;border-collapse:collapse}
+
+th{
+    background:#0d6efd;
+    color:white;
+    padding:10px;
+    text-align:left;
+    font-size:13px;
+    cursor:pointer;
+    user-select:none;
+    white-space:nowrap;
+}
+
+th:hover{background:#0b5ed7}
+
+th .sort-arrow{
+    display:inline-block;
+    margin-left:4px;
+    font-size:10px;
+    opacity:.6;
+}
+
+th.sorted .sort-arrow{opacity:1}
+
+td{
+    padding:10px;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+}
+
+tr:hover{background:#f0f8ff}
+
+.badge{
+    display:inline-block;
+    color:white;
+    padding:3px 10px;
+    border-radius:15px;
+    font-size:12px;
+    white-space:nowrap;
+}
+
+.working{background:#28a745}
+.broken{background:#dc3545}
+.notworking{background:#fd7e14}
+.spare{background:#ffc107;color:#000}
+
+.box-tag{
+    display:inline-block;
+    background:#0d6efd;
+    color:white;
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.no-results{
+    text-align:center;
+    padding:40px;
+    color:#999;
+    font-size:18px;
+}
+
+.result-count{
+    text-align:center;
+    color:#666;
+    margin-bottom:15px;
+    font-size:14px;
+}
+
+mark{background:#fff3cd;padding:1px 2px;border-radius:3px}
+
+.actions-cell{white-space:nowrap}
+.actions-cell .btn{margin-right:4px}
+
+/* Modal */
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+}
+
+.modal-overlay.open{display:flex}
+
+.modal{
+    background:#fff;
+    border-radius:12px;
+    padding:25px;
+    width:90%;
+    max-width:500px;
+    box-shadow:0 10px 40px rgba(0,0,0,.2);
+}
+
+.modal h2{margin-bottom:20px}
+
+.form-group{margin-bottom:15px}
+.form-group label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px;color:#555}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:10px 12px;
+    border:2px solid #ddd;
+    border-radius:8px;
+    font-size:14px;
+    outline:none;
+}
+
+.form-group input:focus,
+.form-group select:focus{border-color:#0d6efd}
+
+.modal-actions{
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    margin-top:20px;
+}
+
+.footer{
+    text-align:center;
+    margin-top:30px;
+    color:#999;
+    font-size:13px;
+}
+
+@media(max-width:600px){
+    .card{min-width:45%}
+    th,td{padding:8px 6px;font-size:12px}
+    .hide-mobile{display:none}
+    .toolbar{flex-direction:column}
+    .toolbar-right{margin-left:0;width:100%}
+    .toolbar-right .btn{flex:1}
+    .modal{width:95%;padding:20px}
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>Home Inventory</h1>
+
+<div class="search-wrap">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="search" placeholder="Search items, categories, notes..." autofocus>
+</div>
+
+<div class="summary" id="summary"></div>
+
+<div class="toolbar">
+    <div class="box-tabs" id="box-tabs"></div>
+    <select class="cat-filter" id="cat-filter"><option value="">All Categories</option></select>
+    <div class="toolbar-right">
+        <button class="btn btn-success" onclick="openModal()">+ Add Item</button>
+        <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
+        <button class="btn btn-outline" onclick="exportJSON()">Export JSON</button>
+    </div>
+</div>
+
+<div id="result-count" class="result-count"></div>
+<div id="results"></div>
+
+<div class="footer">Home Inventory Management</div>
+
+</div>
+
+<!-- Add / Edit Modal -->
+<div class="modal-overlay" id="modal">
+<div class="modal">
+    <h2 id="modal-title">Add Item</h2>
+    <div class="form-group">
+        <label>Item Name *</label>
+        <input type="text" id="f-item" placeholder="e.g. Raspberry Pi 4">
+    </div>
+    <div class="form-group">
+        <label>Box Number *</label>
+        <select id="f-box">
+            <option value="1">Box 1</option>
+            <option value="2">Box 2</option>
+            <option value="3">Box 3</option>
+            <option value="4">Box 4</option>
+            <option value="5">Box 5</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Category *</label>
+        <input type="text" id="f-cat" placeholder="e.g. Electronics">
+    </div>
+    <div class="form-group">
+        <label>Condition</label>
+        <select id="f-cond">
+            <option value="Working">Working</option>
+            <option value="Broken">Broken</option>
+            <option value="Not Working">Not Working</option>
+            <option value="Spare">Spare</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Notes</label>
+        <input type="text" id="f-notes" placeholder="Optional notes">
+    </div>
+    <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="modal-save" onclick="saveItem()">Add Item</button>
+    </div>
+</div>
+</div>
+
+<script>
+const STORAGE_KEY = 'home_inventory_data';
+
+const DEFAULT_DATA = [
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Table Lamp",cat:"Home",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Battery Charger",cat:"Power",cond:"Working",notes:"For charging bike/car batteries"},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Boat Speaker",cat:"Audio",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"JBL Speaker",cat:"Audio",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Broken Tablet",cat:"Electronics",cond:"Broken",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Small Game Controller",cat:"Gaming",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Broken Laptop Stand",cat:"Computer Accessory",cond:"Broken",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Alexa Charger",cat:"Power",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"GRENARO S12 Wireless Microphone",cat:"Audio",cond:"Working",notes:"USB-C Dual Channel"},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Remote Control (Top Floor Lights)",cat:"Smart Home",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Phone Stand",cat:"Mobile Accessory",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Big Wired Microphone",cat:"Audio",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Jawa Bike Screw Set",cat:"Vehicle Parts",cond:"Spare",notes:"Left after Bobber seat replacement"},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Maxima Hand Wrist Watch",cat:"Wearable",cond:"Broken",notes:"Broken Strap"},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Headphones",cat:"Audio",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"RGB Mouse",cat:"Computer Accessory",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Speaker System Remote",cat:"Audio",cond:"Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Lenovo Mouse",cat:"Computer Accessory",cond:"Not Working",notes:""},
+    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Slim Power Bank (10000 mAh)",cat:"Power",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Glue Gun",cat:"Tools",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"15 cm Scale ×2",cat:"Measuring",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"SIOVS HD 1080P Mini Spy Camera",cat:"Security Camera",cond:"Working",notes:"Motion detection, Night Vision"},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Extra Blades (Slim Cutter)",cat:"Tools",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Small LED Light (DIY Projects)",cat:"Electronics",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Power Bank",cat:"Power",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Small Slim Tape",cat:"Supplies",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Sticky Pad",cat:"Supplies",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Big Tape",cat:"Supplies",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Electronic Cleaning Kit (7-in-1)",cat:"Cleaning",cond:"Working",notes:"Laptop, Keyboard, AirPods & Camera Cleaning Kit"},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Multi Plug Adapter",cat:"Electrical",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Soldering Iron ×2",cat:"Tools",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Big Screwdriver Set",cat:"Tools",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Multimeter",cat:"Electronics",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Wireless Bluetooth Selfie Stick Remote (R1)",cat:"Mobile Accessory",cond:"Working",notes:"Black, Bluetooth shutter remote"},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Scissors",cat:"Tools",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Fevicol",cat:"Adhesive",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"FeviKwik",cat:"Adhesive",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Snap-Off Utility Knife (Thermocol & Paper Cutter)",cat:"Tools",cond:"Working",notes:"Metal Grip"},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Stapler",cat:"Stationery",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Black Marker",cat:"Stationery",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Highlighter",cat:"Stationery",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Duracell AAA Batteries ×3",cat:"Batteries",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"3D Printer Wire Rounder",cat:"3D Printing",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"3D Printed Scraper",cat:"3D Printing",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Big Knife Cutter",cat:"Tools",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Electrical Tape",cat:"Electrical",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Glue Gun Sticks",cat:"Supplies",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Stapler Pins",cat:"Stationery",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Spare Almirah Keys (Shubham's Floor) ×2",cat:"Keys",cond:"Working",notes:"Unknown lock"},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Measuring Tape",cat:"Measuring",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Single Battery Holder",cat:"Electronics",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"2-Pin Plug",cat:"Electrical",cond:"Working",notes:""},
+    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"3D Printed Screw Size Gauge (M2/M3)",cat:"3D Printing",cond:"Working",notes:"Measures screw sizes"},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Big TV Remote (55-inch TV)",cat:"Electronics",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Multiplug (Without Wire)",cat:"Electrical",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Swimming Goggles",cat:"Sports",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Big Round Transparent Tape",cat:"Supplies",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Old Mobile Cover",cat:"Mobile Accessory",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Black Goggles",cat:"Eyewear",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Shubham's Broken Spectacles",cat:"Eyewear",cond:"Broken",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Double Hole Punch Machine",cat:"Stationery",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"3D Printer Single Spool Holder",cat:"3D Printing",cond:"Working",notes:"Removed when using AMS"},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"MTS USB Dongle",cat:"Electronics",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Mobile Stand",cat:"Mobile Accessory",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"4-Point Multiplug",cat:"Electrical",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"3-Point Multiplug",cat:"Electrical",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"4-Point Multiplug",cat:"Electrical",cond:"Working",notes:"Second Unit"},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Sony Earphones",cat:"Audio",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Gym Hand Grip",cat:"Fitness",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Cloud Sek Men's Purse",cat:"Personal Accessory",cond:"Working",notes:"Conference Giveaway"},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Family Drama Card Game",cat:"Games",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Playing Cards Deck",cat:"Games",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Mafia City Cards",cat:"Games",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Small Transparent Tape",cat:"Supplies",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Velcro Strip",cat:"Supplies",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"3D Printed Wire Rounder",cat:"3D Printing",cond:"Working",notes:""},
+    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"3D Printed Cable Roll-Up Organizer",cat:"3D Printing",cond:"Working",notes:"Cable Management Tool"},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Thread Cutter",cat:"Tools",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Small 5 cm Ring",cat:"Hardware",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Resistors",cat:"Electronics Components",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Tactile Buttons",cat:"Electronics Components",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"USB Dongles & Small Raspberry Pi Accessories",cat:"Electronics",cond:"Working",notes:"Pendrives, keyboard/mouse dongles, Raspberry Pi Zero accessories"},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Jumper Wires",cat:"Electronics Components",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"USB Switch",cat:"Electronics",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Big Wired Microphone",cat:"Audio",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Boat Wireless Earphones",cat:"Audio",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"L-Shaped Screwdriver Set",cat:"Tools",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"LEDs & Capacitors",cat:"Electronics Components",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"M3 Phillips Pan Screw Set",cat:"Hardware",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Raspberry Pi 4",cat:"Single Board Computer",cond:"Working",notes:"Main Raspberry Pi"},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"HDMI Bi-Directional Switch",cat:"Electronics",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Raspberry Pi Case / HDD Dock",cat:"Electronics",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Raspberry Pi Zero 2W",cat:"Single Board Computer",cond:"Working",notes:"With memory card"},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Mini HDMI to HDMI Adapter",cat:"Adapter",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"SATA to USB Adapters ×2",cat:"Adapter",cond:"Working",notes:"Connect HDD/SSD via USB"},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"USB-A Male to USB-B Female Adapter",cat:"Adapter",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"128 GB SSD",cat:"Storage",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Small Phone Chargers",cat:"Power",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Capacitors",cat:"Electronics Components",cond:"Working",notes:"Loose capacitors"},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Magnets",cat:"Hardware",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"AAA Batteries",cat:"Battery",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Cutter Set",cat:"Tools",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Isopropyl Alcohol ×2",cat:"Cleaning",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"SD Card Cases ×2",cat:"Storage",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Wire Organizer Stickers",cat:"Cable Management",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Small Cable Organizer",cat:"Cable Management",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Mouse (Dongle Lost)",cat:"Computer Accessory",cond:"Working",notes:"USB receiver missing"},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Battery Clip Holders (+/-)",cat:"Electronics Components",cond:"Working",notes:"Battery terminal clips"},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Small Diary",cat:"Stationery",cond:"Working",notes:""},
+    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"AAA Battery",cat:"Battery",cond:"Working",notes:"Single cell"},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Black Goggles",cat:"Eyewear",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Jawa Bike Service Kit",cat:"Vehicle Tools",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Keyboard Mat",cat:"Computer Accessory",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Usha Machine Oil",cat:"Lubricant",cond:"Working",notes:"Machine lubricating oil"},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Raspberry Pi Zero 2W Micro USB Chargers ×2",cat:"Power",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Very Old Nokia Chargers ×2",cat:"Power",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Jump Rope",cat:"Fitness",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"3D Printed Black Part",cat:"3D Printing",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"3D Printed Wire Roller",cat:"3D Printing",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Jawa Side Mirror",cat:"Vehicle Part",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Shubham's Black Spectacles",cat:"Eyewear",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Spare Power Lens (Shubham)",cat:"Eyewear",cond:"Spare",notes:"Broken spectacles lens"},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Gym Roller",cat:"Fitness",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Cable Organizer",cat:"Cable Management",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Transistor Battery",cat:"Electronics",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Earbud Rubber Tips",cat:"Audio Accessory",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Old Screwdriver Set",cat:"Tools",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Balloon Tape Stickers",cat:"Supplies",cond:"Working",notes:"Double-sided adhesive"},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Samsung TV Adapter",cat:"Electronics",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Dual Point Compass",cat:"Stationery",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Raspberry Pi Zero 2W Cover",cat:"3D Printing / SBC",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Paper Clips ×2",cat:"Stationery",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Hand Tally Counter",cat:"Measuring Tool",cond:"Working",notes:"Manual click counter"},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Mobile Touch Pen (Stylus)",cat:"Mobile Accessory",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Pencil Box",cat:"Stationery",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Erasers ×2",cat:"Stationery",cond:"Working",notes:""},
+    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Sharpeners ×2",cat:"Stationery",cond:"Working",notes:""},
+];
+
+const BOX_DESCS = {
+    1: "Electronics, Audio, Vehicle Accessories",
+    2: "Tools, Electronics, Electrical, 3D Printing & DIY Accessories",
+    3: "Electrical Accessories, Sports, Games & Miscellaneous",
+    4: "Raspberry Pi, Electronics, Components, Adapters & Repair Tools",
+    5: "Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",
+};
+
+const COND_CLS = {Working:'working',Broken:'broken','Not Working':'notworking',Spare:'spare'};
+
+let inventory = [];
+let editingIndex = -1;
+let sortCol = null;
+let sortAsc = true;
+let activeBox = 0;
+
+function load() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+        inventory = JSON.parse(saved);
+    } else {
+        inventory = JSON.parse(JSON.stringify(DEFAULT_DATA));
+        save();
+    }
+}
+
+function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(inventory));
+}
+
+function getCategories() {
+    return [...new Set(inventory.map(i => i.cat))].sort();
+}
+
+function renderBoxTabs() {
+    const tabs = document.getElementById('box-tabs');
+    let html = `<button class="box-tab ${activeBox === 0 ? 'active' : ''}" onclick="setBox(0)">All</button>`;
+    for (let b = 1; b <= 5; b++) {
+        html += `<button class="box-tab ${activeBox === b ? 'active' : ''}" onclick="setBox(${b})">Box ${b}</button>`;
+    }
+    tabs.innerHTML = html;
+}
+
+function renderCatFilter() {
+    const sel = document.getElementById('cat-filter');
+    const current = sel.value;
+    const cats = getCategories();
+    let html = '<option value="">All Categories</option>';
+    cats.forEach(c => {
+        html += `<option value="${c}" ${c === current ? 'selected' : ''}>${c}</option>`;
+    });
+    sel.innerHTML = html;
+}
+
+function setBox(b) {
+    activeBox = b;
+    renderBoxTabs();
+    refresh();
+}
+
+function getFiltered() {
+    const query = document.getElementById('search').value.trim().toLowerCase();
+    const catFilter = document.getElementById('cat-filter').value;
+
+    let items = inventory.map((item, idx) => ({...item, _idx: idx}));
+
+    if (activeBox > 0) items = items.filter(i => i.box === activeBox);
+    if (catFilter) items = items.filter(i => i.cat === catFilter);
+    if (query) {
+        items = items.filter(i =>
+            i.item.toLowerCase().includes(query) ||
+            i.cat.toLowerCase().includes(query) ||
+            i.notes.toLowerCase().includes(query)
+        );
+    }
+
+    if (sortCol) {
+        items.sort((a, b) => {
+            let va = a[sortCol], vb = b[sortCol];
+            if (sortCol === 'box') return sortAsc ? va - vb : vb - va;
+            va = (va || '').toLowerCase();
+            vb = (vb || '').toLowerCase();
+            if (va < vb) return sortAsc ? -1 : 1;
+            if (va > vb) return sortAsc ? 1 : -1;
+            return 0;
+        });
+    }
+
+    return items;
+}
+
+function renderSummary(items) {
+    const total = items.length;
+    const boxes = new Set(items.map(i => i.box)).size;
+    const working = items.filter(i => i.cond === 'Working').length;
+    const broken = items.filter(i => i.cond === 'Broken' || i.cond === 'Not Working').length;
+
+    document.getElementById('summary').innerHTML = `
+        <div class="card"><h2>Total Items</h2><div class="num">${total}</div></div>
+        <div class="card"><h2>Boxes</h2><div class="num">${boxes}</div></div>
+        <div class="card"><h2>Working</h2><div class="num">${working}</div></div>
+        <div class="card"><h2>Broken / Not Working</h2><div class="num">${broken}</div></div>
+    `;
+}
+
+function highlight(text, query) {
+    if (!query || !text) return text || '';
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+}
+
+function sortArrow(col) {
+    if (sortCol !== col) return '<span class="sort-arrow">↕</span>';
+    return `<span class="sort-arrow">${sortAsc ? '↑' : '↓'}</span>`;
+}
+
+function toggleSort(col) {
+    if (sortCol === col) {
+        sortAsc = !sortAsc;
+    } else {
+        sortCol = col;
+        sortAsc = true;
+    }
+    refresh();
+}
+
+function renderResults(items) {
+    const resultsDiv = document.getElementById('results');
+    const resultCountDiv = document.getElementById('result-count');
+    const query = document.getElementById('search').value.trim();
+    const isSearching = query || activeBox > 0 || document.getElementById('cat-filter').value;
+
+    if (items.length === 0) {
+        resultsDiv.innerHTML = '<div class="no-results">No items found</div>';
+        resultCountDiv.textContent = '';
+        return;
+    }
+
+    resultCountDiv.textContent = isSearching ? `Found ${items.length} item${items.length !== 1 ? 's' : ''}` : '';
+
+    if (isSearching || sortCol) {
+        let html = '<div class="box-group"><table><thead><tr>';
+        html += `<th class="${sortCol==='box'?'sorted':''}" onclick="toggleSort('box')">Box ${sortArrow('box')}</th>`;
+        html += `<th class="${sortCol==='item'?'sorted':''}" onclick="toggleSort('item')">Item ${sortArrow('item')}</th>`;
+        html += `<th class="${sortCol==='cat'?'sorted':''}" onclick="toggleSort('cat')">Category ${sortArrow('cat')}</th>`;
+        html += `<th class="${sortCol==='cond'?'sorted':''}" onclick="toggleSort('cond')">Condition ${sortArrow('cond')}</th>`;
+        html += `<th class="hide-mobile">Notes</th>`;
+        html += '<th>Actions</th>';
+        html += '</tr></thead><tbody>';
+
+        items.forEach(i => {
+            const cls = COND_CLS[i.cond] || 'working';
+            html += `<tr>
+                <td><span class="box-tag">Box ${i.box}</span></td>
+                <td>${highlight(i.item, query)}</td>
+                <td>${highlight(i.cat, query)}</td>
+                <td><span class="badge ${cls}">${i.cond}</span></td>
+                <td class="hide-mobile">${highlight(i.notes, query)}</td>
+                <td class="actions-cell">
+                    <button class="btn btn-warning btn-sm" onclick="editItem(${i._idx})">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteItem(${i._idx})">Del</button>
+                </td>
+            </tr>`;
+        });
+
+        html += '</tbody></table></div>';
+        resultsDiv.innerHTML = html;
+    } else {
+        const grouped = {};
+        items.forEach(i => {
+            if (!grouped[i.box]) grouped[i.box] = [];
+            grouped[i.box].push(i);
+        });
+
+        let html = '';
+        Object.keys(grouped).sort((a, b) => a - b).forEach(box => {
+            const boxItems = grouped[box];
+            const desc = BOX_DESCS[box] || '';
+            html += `<div class="box-group">`;
+            html += `<h2>Box ${box}</h2>`;
+            html += `<div class="desc">${desc}</div>`;
+            html += '<table><thead><tr>';
+            html += `<th onclick="toggleSort('item')">Item ${sortArrow('item')}</th>`;
+            html += `<th onclick="toggleSort('cat')">Category ${sortArrow('cat')}</th>`;
+            html += `<th onclick="toggleSort('cond')">Condition ${sortArrow('cond')}</th>`;
+            html += `<th class="hide-mobile">Notes</th>`;
+            html += '<th>Actions</th>';
+            html += '</tr></thead><tbody>';
+
+            boxItems.forEach(i => {
+                const cls = COND_CLS[i.cond] || 'working';
+                html += `<tr>
+                    <td>${i.item}</td>
+                    <td>${i.cat}</td>
+                    <td><span class="badge ${cls}">${i.cond}</span></td>
+                    <td class="hide-mobile">${i.notes}</td>
+                    <td class="actions-cell">
+                        <button class="btn btn-warning btn-sm" onclick="editItem(${i._idx})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteItem(${i._idx})">Del</button>
+                    </td>
+                </tr>`;
+            });
+
+            html += '</tbody></table></div>';
+        });
+
+        resultsDiv.innerHTML = html;
+    }
+}
+
+function refresh() {
+    const items = getFiltered();
+    renderSummary(items);
+    renderResults(items);
+}
+
+// Modal
+function openModal(idx) {
+    editingIndex = idx !== undefined ? idx : -1;
+    const modal = document.getElementById('modal');
+    const title = document.getElementById('modal-title');
+    const saveBtn = document.getElementById('modal-save');
+
+    if (editingIndex >= 0) {
+        const item = inventory[editingIndex];
+        title.textContent = 'Edit Item';
+        saveBtn.textContent = 'Save Changes';
+        document.getElementById('f-item').value = item.item;
+        document.getElementById('f-box').value = item.box;
+        document.getElementById('f-cat').value = item.cat;
+        document.getElementById('f-cond').value = item.cond;
+        document.getElementById('f-notes').value = item.notes;
+    } else {
+        title.textContent = 'Add Item';
+        saveBtn.textContent = 'Add Item';
+        document.getElementById('f-item').value = '';
+        document.getElementById('f-box').value = '1';
+        document.getElementById('f-cat').value = '';
+        document.getElementById('f-cond').value = 'Working';
+        document.getElementById('f-notes').value = '';
+    }
+
+    modal.classList.add('open');
+    document.getElementById('f-item').focus();
+}
+
+function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    editingIndex = -1;
+}
+
+function saveItem() {
+    const item = document.getElementById('f-item').value.trim();
+    const box = parseInt(document.getElementById('f-box').value);
+    const cat = document.getElementById('f-cat').value.trim();
+    const cond = document.getElementById('f-cond').value;
+    const notes = document.getElementById('f-notes').value.trim();
+
+    if (!item || !cat) {
+        alert('Please fill in Item Name and Category.');
+        return;
+    }
+
+    const entry = {
+        box,
+        boxDesc: BOX_DESCS[box] || '',
+        item,
+        cat,
+        cond,
+        notes,
+    };
+
+    if (editingIndex >= 0) {
+        inventory[editingIndex] = entry;
+    } else {
+        inventory.push(entry);
+    }
+
+    save();
+    closeModal();
+    renderCatFilter();
+    refresh();
+}
+
+function editItem(idx) {
+    openModal(idx);
+}
+
+function deleteItem(idx) {
+    const item = inventory[idx];
+    if (confirm(`Delete "${item.item}" from Box ${item.box}?`)) {
+        inventory.splice(idx, 1);
+        save();
+        renderCatFilter();
+        refresh();
+    }
+}
+
+// Export
+function exportCSV() {
+    const headers = ['Box', 'Item', 'Category', 'Condition', 'Notes'];
+    const rows = inventory.map(i =>
+        [i.box, i.item, i.cat, i.cond, i.notes].map(v => `"${String(v).replace(/"/g, '""')}"`)
+    );
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    download('inventory.csv', csv, 'text/csv');
+}
+
+function exportJSON() {
+    const data = inventory.map(i => ({
+        box: i.box,
+        item: i.item,
+        category: i.cat,
+        condition: i.cond,
+        notes: i.notes,
+    }));
+    download('inventory.json', JSON.stringify(data, null, 2), 'application/json');
+}
+
+function download(filename, content, type) {
+    const blob = new Blob([content], {type});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Hash support: index.html#box=3 opens filtered to Box 3
+function applyHash() {
+    const hash = location.hash.replace('#', '');
+    const params = new URLSearchParams(hash);
+    const box = parseInt(params.get('box'));
+    if (box >= 1 && box <= 5) {
+        activeBox = box;
+        renderBoxTabs();
+    }
+    const q = params.get('q');
+    if (q) document.getElementById('search').value = q;
+}
+
+// Init
+load();
+applyHash();
+renderBoxTabs();
+renderCatFilter();
+refresh();
+
+document.getElementById('search').addEventListener('input', refresh);
+document.getElementById('cat-filter').addEventListener('change', refresh);
+window.addEventListener('hashchange', function() { applyHash(); renderBoxTabs(); refresh(); });
+
+document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+});
+</script>
+
+</body>
+</html>
