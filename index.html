@@ -715,7 +715,8 @@ function jsonToInventory(data) {
                 item: it.item,
                 cat: it.category,
                 cond: it.condition,
-                notes: it.notes || ''
+                notes: it.notes || '',
+                tags: it.tags || ''
             });
         }
     }
@@ -802,7 +803,8 @@ function getFiltered() {
         items = items.filter(i =>
             i.item.toLowerCase().includes(query) ||
             i.cat.toLowerCase().includes(query) ||
-            i.notes.toLowerCase().includes(query)
+            i.notes.toLowerCase().includes(query) ||
+            (i.tags || '').toLowerCase().includes(query)
         );
     }
 
