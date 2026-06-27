@@ -283,13 +283,111 @@ mark{background:#fff3cd;padding:1px 2px;border-radius:3px}
 }
 
 @media(max-width:600px){
-    .card{min-width:45%}
-    th,td{padding:8px 6px;font-size:12px}
-    .hide-mobile{display:none}
-    .toolbar{flex-direction:column}
-    .toolbar-right{margin-left:0;width:100%}
-    .toolbar-right .btn{flex:1}
-    .modal{width:95%;padding:20px}
+    body{padding:10px}
+    h1{font-size:22px;margin-bottom:14px}
+
+    .search-wrap{margin-bottom:14px}
+    .search-wrap input{padding:12px 16px 12px 40px;font-size:15px}
+
+    .summary{gap:8px;margin-bottom:14px}
+    .card{min-width:45%;padding:10px 12px}
+    .card h2{font-size:11px}
+    .card .num{font-size:22px}
+
+    .toolbar{flex-direction:column;gap:8px}
+    .box-tabs{gap:4px;width:100%;justify-content:space-between}
+    .box-tab{padding:8px 0;font-size:12px;flex:1;text-align:center;min-width:0}
+    .cat-filter{width:100%;font-size:14px;padding:10px 12px}
+    .toolbar-right{margin-left:0;width:100%;gap:6px}
+    .toolbar-right .btn{flex:1;padding:10px 8px;font-size:13px}
+
+    .box-group{padding:12px;margin-bottom:14px}
+    .box-group h2{font-size:16px}
+
+    /* Cards instead of table */
+    table{display:block}
+    thead{display:none}
+    tbody{display:block}
+
+    tr{
+        display:block;
+        border:1px solid #e8e8e8;
+        border-radius:10px;
+        padding:12px;
+        margin-bottom:10px;
+        background:#fff;
+        box-shadow:0 1px 3px rgba(0,0,0,.05);
+    }
+
+    tr:hover{background:#f8f9fa}
+
+    td{
+        display:block;
+        border:none;
+        padding:2px 0;
+        font-size:14px;
+    }
+
+    .td-item{
+        font-weight:bold;
+        font-size:16px;
+        margin-bottom:6px;
+    }
+
+    .td-box{margin-bottom:6px}
+
+    .td-cat{
+        color:#666;
+        font-size:13px;
+    }
+
+    .td-cat::before{content:"Category: ";font-weight:600;color:#888}
+
+    .td-cond{margin:6px 0}
+
+    .td-notes:empty{display:none}
+    .td-notes{
+        font-size:13px;
+        color:#666;
+        font-style:italic;
+        margin-bottom:6px;
+    }
+
+    .actions-cell{
+        display:flex;
+        gap:8px;
+        margin-top:8px;
+        padding-top:8px;
+        border-top:1px solid #eee;
+    }
+
+    .actions-cell .btn{
+        flex:1;
+        padding:8px 12px;
+        font-size:13px;
+        text-align:center;
+    }
+
+    .badge{font-size:12px;padding:3px 10px}
+    .box-tag{font-size:12px;padding:3px 10px}
+
+    .result-count{font-size:13px;margin-bottom:10px}
+    .no-results{padding:30px;font-size:16px}
+
+    .modal-overlay{align-items:flex-end}
+    .modal{
+        width:100%;
+        max-width:100%;
+        padding:20px;
+        border-radius:16px 16px 0 0;
+        max-height:90vh;
+        overflow-y:auto;
+    }
+    .modal h2{font-size:18px;margin-bottom:15px}
+    .form-group{margin-bottom:12px}
+    .form-group input,.form-group select{padding:12px;font-size:16px}
+    .modal-actions{gap:8px}
+    .modal-actions .btn{flex:1;padding:12px 16px;font-size:15px}
 }
 </style>
 
@@ -661,12 +759,13 @@ function renderResults(items) {
 
         items.forEach(i => {
             const cls = COND_CLS[i.cond] || 'working';
+            const notesHtml = i.notes ? highlight(i.notes, query) : '';
             html += `<tr>
-                <td><span class="box-tag">Box ${i.box}</span></td>
-                <td>${highlight(i.item, query)}</td>
-                <td>${highlight(i.cat, query)}</td>
-                <td><span class="badge ${cls}">${i.cond}</span></td>
-                <td class="hide-mobile">${highlight(i.notes, query)}</td>
+                <td data-label="Item" class="td-item">${highlight(i.item, query)}</td>
+                <td data-label="Box" class="td-box"><span class="box-tag">Box ${i.box}</span></td>
+                <td data-label="Category" class="td-cat">${highlight(i.cat, query)}</td>
+                <td data-label="Condition" class="td-cond"><span class="badge ${cls}">${i.cond}</span></td>
+                <td data-label="Notes" class="td-notes">${notesHtml}</td>
                 <td class="actions-cell">
                     <button class="btn btn-warning btn-sm" onclick="editItem(${i._idx})">Edit</button>
                     <button class="btn btn-danger btn-sm" onclick="deleteItem(${i._idx})">Del</button>
@@ -700,11 +799,12 @@ function renderResults(items) {
 
             boxItems.forEach(i => {
                 const cls = COND_CLS[i.cond] || 'working';
+                const notesHtml = i.notes || '';
                 html += `<tr>
-                    <td>${i.item}</td>
-                    <td>${i.cat}</td>
-                    <td><span class="badge ${cls}">${i.cond}</span></td>
-                    <td class="hide-mobile">${i.notes}</td>
+                    <td data-label="Item" class="td-item">${i.item}</td>
+                    <td data-label="Category" class="td-cat">${i.cat}</td>
+                    <td data-label="Condition" class="td-cond"><span class="badge ${cls}">${i.cond}</span></td>
+                    <td data-label="Notes" class="td-notes">${notesHtml}</td>
                     <td class="actions-cell">
                         <button class="btn btn-warning btn-sm" onclick="editItem(${i._idx})">Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteItem(${i._idx})">Del</button>
