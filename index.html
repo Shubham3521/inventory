@@ -296,6 +296,114 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
     font-size:13px;
 }
 
+/* Info panel */
+.info-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+}
+.info-overlay.open{display:flex}
+
+.info-panel{
+    background:#16213e;
+    border:1px solid #2a2a4a;
+    border-radius:14px;
+    padding:28px;
+    width:92%;
+    max-width:640px;
+    max-height:85vh;
+    overflow-y:auto;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    color:#ccc;
+}
+
+.info-panel h2{color:#fff;margin-bottom:18px;font-size:22px}
+.info-panel h3{color:#e94560;margin:18px 0 8px;font-size:15px;text-transform:uppercase;letter-spacing:.5px}
+
+.info-panel p,.info-panel li{font-size:14px;line-height:1.7;color:#bbb}
+.info-panel ul{padding-left:18px;margin-bottom:6px}
+.info-panel li{margin-bottom:4px}
+
+.info-panel a{color:#7fb3e0;text-decoration:none}
+.info-panel a:hover{text-decoration:underline;color:#e94560}
+
+.info-panel code{
+    background:#0f3460;
+    padding:2px 7px;
+    border-radius:4px;
+    font-size:13px;
+    color:#7fb3e0;
+}
+
+.info-section{
+    background:#0f3460;
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:12px;
+}
+
+.info-section-title{
+    font-weight:bold;
+    color:#e94560;
+    font-size:13px;
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.info-close{
+    float:right;
+    background:none;
+    border:none;
+    color:#666;
+    font-size:24px;
+    cursor:pointer;
+    padding:0 6px;
+    line-height:1;
+}
+.info-close:hover{color:#e94560}
+
+.page-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:6px;
+}
+
+.page-card{
+    background:#1a1a2e;
+    border:1px solid #2a2a4a;
+    border-radius:8px;
+    padding:10px 12px;
+}
+
+.page-card strong{color:#fff;font-size:13px}
+.page-card p{font-size:12px;margin:3px 0 0;color:#7a7a9a}
+
+.kbd-grid{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:4px 14px;
+    font-size:13px;
+}
+.kbd-key{color:#e94560;font-weight:bold}
+
+@media(max-width:600px){
+    .info-overlay{align-items:flex-end}
+    .info-panel{
+        width:100%;
+        max-width:100%;
+        border-radius:16px 16px 0 0;
+        max-height:90vh;
+        padding:20px;
+    }
+    .page-grid{grid-template-columns:1fr}
+}
+
 @media(max-width:600px){
     body{padding:10px}
     h1{font-size:22px;margin-bottom:14px}
@@ -425,6 +533,7 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
         <button class="btn btn-success" onclick="openModal()">+ Add Item</button>
         <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
         <button class="btn btn-outline" onclick="exportJSON()">Export JSON</button>
+        <button class="btn btn-outline" onclick="openInfo()" title="About this app">&#9432; Info</button>
     </div>
 </div>
 
@@ -473,6 +582,107 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
     <div class="modal-actions">
         <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
         <button class="btn btn-primary" id="modal-save" onclick="saveItem()">Add Item</button>
+    </div>
+</div>
+</div>
+
+<!-- Info Panel -->
+<div class="info-overlay" id="info-overlay">
+<div class="info-panel">
+    <button class="info-close" onclick="closeInfo()">&times;</button>
+    <h2>Home Inventory</h2>
+    <p>A searchable inventory app for tracking items across 5 physical storage boxes. Built with plain HTML, CSS & JavaScript — no frameworks, no backend.</p>
+
+    <h3>All Pages</h3>
+    <div class="page-grid">
+        <a href="index.html" class="page-card">
+            <strong>index.html</strong>
+            <p>Main search app — search, add, edit, delete items, filter by box/category, export data</p>
+        </a>
+        <a href="print.html" class="page-card">
+            <strong>print.html</strong>
+            <p>Printable box labels with QR codes (A-Z sorted) — stick on physical boxes</p>
+        </a>
+        <a href="box1.html" class="page-card">
+            <strong>box1.html</strong>
+            <p>Box 1 — Electronics, Audio, Vehicle Accessories (overview page)</p>
+        </a>
+        <a href="box2.html" class="page-card">
+            <strong>box2.html</strong>
+            <p>Box 2 — Tools, Electrical, 3D Printing & DIY</p>
+        </a>
+        <a href="box3.html" class="page-card">
+            <strong>box3.html</strong>
+            <p>Box 3 — Electrical, Sports, Games & Misc</p>
+        </a>
+        <a href="box4.html" class="page-card">
+            <strong>box4.html</strong>
+            <p>Box 4 — Raspberry Pi, Components & Adapters</p>
+        </a>
+        <a href="box5.html" class="page-card">
+            <strong>box5.html</strong>
+            <p>Box 5 — Vehicle, RPi, Stationery & Misc</p>
+        </a>
+        <div class="page-card">
+            <strong>data.json</strong>
+            <p>Central data file — edit this to add/remove items permanently</p>
+        </div>
+    </div>
+
+    <h3>What You Can Do</h3>
+    <div class="info-section">
+        <div class="info-section-title">Search</div>
+        <p>Type in the search bar to instantly find items across all boxes. Matches item names, categories, and notes.</p>
+    </div>
+    <div class="info-section">
+        <div class="info-section-title">Filter</div>
+        <p>Click box tabs (Box 1–5) to filter by box. Use the category dropdown to narrow further. Combine both for precision.</p>
+    </div>
+    <div class="info-section">
+        <div class="info-section-title">Add / Edit / Delete Items</div>
+        <p>Click <strong>+ Add Item</strong> to add a new item. Each row has <strong>Edit</strong> and <strong>Delete</strong> buttons. Changes are saved in your browser's localStorage.</p>
+    </div>
+    <div class="info-section">
+        <div class="info-section-title">Sort</div>
+        <p>Click any column header (Item, Category, Condition, Box) to sort ascending/descending.</p>
+    </div>
+    <div class="info-section">
+        <div class="info-section-title">Export</div>
+        <p><strong>Export CSV</strong> — download a spreadsheet-compatible file. <strong>Export JSON</strong> — download structured data.</p>
+    </div>
+    <div class="info-section">
+        <div class="info-section-title">Deep Links</div>
+        <p>Use URL hashes to link directly to a box: <code>index.html#box=3</code>. QR codes on printed labels use this.</p>
+    </div>
+    <div class="info-section">
+        <div class="info-section-title">Print Labels</div>
+        <p>Open <a href="print.html">print.html</a> to generate printable labels with QR codes for each box. Stick them on your physical boxes — scan to search.</p>
+    </div>
+
+    <h3>Data & Storage</h3>
+    <div class="info-section">
+        <p><strong>Source of truth:</strong> <code>data.json</code> — the central inventory file. On first visit, the app loads from this file.<br>
+        <strong>Local edits:</strong> Saved in browser localStorage. To reset to data.json, clear localStorage.<br>
+        <strong>Permanent changes:</strong> Edit <code>data.json</code> directly, commit & push to GitHub.</p>
+    </div>
+
+    <h3>Hosting</h3>
+    <div class="info-section">
+        <p><strong>GitHub Repo:</strong> <a href="https://github.com/Shubham3521/inventory" target="_blank">github.com/Shubham3521/inventory</a><br>
+        <strong>Live Site:</strong> <a href="https://shubham3521.github.io/inventory/index.html" target="_blank">shubham3521.github.io/inventory</a><br>
+        <strong>No backend required</strong> — works offline once loaded. Open any <code>.html</code> file directly in a browser.</p>
+    </div>
+
+    <h3>Keyboard Shortcuts</h3>
+    <div class="info-section">
+        <div class="kbd-grid">
+            <span class="kbd-key">Esc</span><span>Close any popup (info, add/edit modal)</span>
+            <span class="kbd-key">/</span><span>Focus search bar</span>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px;color:#4a4a6a;font-size:12px">
+        Built by Shubham &middot; Static HTML/CSS/JS &middot; No frameworks
     </div>
 </div>
 </div>
@@ -870,8 +1080,16 @@ document.getElementById('modal').addEventListener('click', function(e) {
 });
 
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') { closeModal(); closeInfo(); }
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'SELECT') {
+        e.preventDefault();
+        document.getElementById('search').focus();
+    }
 });
+
+function openInfo() { document.getElementById('info-overlay').classList.add('open'); }
+function closeInfo() { document.getElementById('info-overlay').classList.remove('open'); }
+document.getElementById('info-overlay').addEventListener('click', function(e) { if (e.target === this) closeInfo(); });
 </script>
 
 </body>
