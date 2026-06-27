@@ -480,153 +480,27 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
 <script>
 const STORAGE_KEY = 'home_inventory_data';
 
-const DEFAULT_DATA = [
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Table Lamp",cat:"Home",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Battery Charger",cat:"Power",cond:"Working",notes:"For charging bike/car batteries"},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Boat Speaker",cat:"Audio",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"JBL Speaker",cat:"Audio",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Broken Tablet",cat:"Electronics",cond:"Broken",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Small Game Controller",cat:"Gaming",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Broken Laptop Stand",cat:"Computer Accessory",cond:"Broken",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Alexa Charger",cat:"Power",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"GRENARO S12 Wireless Microphone",cat:"Audio",cond:"Working",notes:"USB-C Dual Channel"},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Remote Control (Top Floor Lights)",cat:"Smart Home",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Phone Stand",cat:"Mobile Accessory",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Big Wired Microphone",cat:"Audio",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Jawa Bike Screw Set",cat:"Vehicle Parts",cond:"Spare",notes:"Left after Bobber seat replacement"},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Maxima Hand Wrist Watch",cat:"Wearable",cond:"Broken",notes:"Broken Strap"},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Headphones",cat:"Audio",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"RGB Mouse",cat:"Computer Accessory",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Speaker System Remote",cat:"Audio",cond:"Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Lenovo Mouse",cat:"Computer Accessory",cond:"Not Working",notes:""},
-    {box:1,boxDesc:"Electronics, Audio, Vehicle Accessories",item:"Slim Power Bank (10000 mAh)",cat:"Power",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Glue Gun",cat:"Tools",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"15 cm Scale ×2",cat:"Measuring",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"SIOVS HD 1080P Mini Spy Camera",cat:"Security Camera",cond:"Working",notes:"Motion detection, Night Vision"},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Extra Blades (Slim Cutter)",cat:"Tools",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Small LED Light (DIY Projects)",cat:"Electronics",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Power Bank",cat:"Power",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Small Slim Tape",cat:"Supplies",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Sticky Pad",cat:"Supplies",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Big Tape",cat:"Supplies",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Electronic Cleaning Kit (7-in-1)",cat:"Cleaning",cond:"Working",notes:"Laptop, Keyboard, AirPods & Camera Cleaning Kit"},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Multi Plug Adapter",cat:"Electrical",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Soldering Iron ×2",cat:"Tools",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Big Screwdriver Set",cat:"Tools",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Multimeter",cat:"Electronics",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Wireless Bluetooth Selfie Stick Remote (R1)",cat:"Mobile Accessory",cond:"Working",notes:"Black, Bluetooth shutter remote"},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Scissors",cat:"Tools",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Fevicol",cat:"Adhesive",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"FeviKwik",cat:"Adhesive",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Snap-Off Utility Knife (Thermocol & Paper Cutter)",cat:"Tools",cond:"Working",notes:"Metal Grip"},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Stapler",cat:"Stationery",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Black Marker",cat:"Stationery",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Highlighter",cat:"Stationery",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Duracell AAA Batteries ×3",cat:"Batteries",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"3D Printer Wire Rounder",cat:"3D Printing",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"3D Printed Scraper",cat:"3D Printing",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Big Knife Cutter",cat:"Tools",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Electrical Tape",cat:"Electrical",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Glue Gun Sticks",cat:"Supplies",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Stapler Pins",cat:"Stationery",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Spare Almirah Keys (Shubham's Floor) ×2",cat:"Keys",cond:"Working",notes:"Unknown lock"},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Measuring Tape",cat:"Measuring",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"Single Battery Holder",cat:"Electronics",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"2-Pin Plug",cat:"Electrical",cond:"Working",notes:""},
-    {box:2,boxDesc:"Tools, Electronics, Electrical, 3D Printing & DIY Accessories",item:"3D Printed Screw Size Gauge (M2/M3)",cat:"3D Printing",cond:"Working",notes:"Measures screw sizes"},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Big TV Remote (55-inch TV)",cat:"Electronics",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Multiplug (Without Wire)",cat:"Electrical",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Swimming Goggles",cat:"Sports",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Big Round Transparent Tape",cat:"Supplies",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Old Mobile Cover",cat:"Mobile Accessory",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Black Goggles",cat:"Eyewear",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Shubham's Broken Spectacles",cat:"Eyewear",cond:"Broken",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Double Hole Punch Machine",cat:"Stationery",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"3D Printer Single Spool Holder",cat:"3D Printing",cond:"Working",notes:"Removed when using AMS"},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"MTS USB Dongle",cat:"Electronics",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Mobile Stand",cat:"Mobile Accessory",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"4-Point Multiplug",cat:"Electrical",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"3-Point Multiplug",cat:"Electrical",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"4-Point Multiplug",cat:"Electrical",cond:"Working",notes:"Second Unit"},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Sony Earphones",cat:"Audio",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Gym Hand Grip",cat:"Fitness",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Cloud Sek Men's Purse",cat:"Personal Accessory",cond:"Working",notes:"Conference Giveaway"},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Family Drama Card Game",cat:"Games",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Playing Cards Deck",cat:"Games",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Mafia City Cards",cat:"Games",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Small Transparent Tape",cat:"Supplies",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"Velcro Strip",cat:"Supplies",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"3D Printed Wire Rounder",cat:"3D Printing",cond:"Working",notes:""},
-    {box:3,boxDesc:"Electrical Accessories, Sports, Games & Miscellaneous",item:"3D Printed Cable Roll-Up Organizer",cat:"3D Printing",cond:"Working",notes:"Cable Management Tool"},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Thread Cutter",cat:"Tools",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Small 5 cm Ring",cat:"Hardware",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Resistors",cat:"Electronics Components",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Tactile Buttons",cat:"Electronics Components",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"USB Dongles & Small Raspberry Pi Accessories",cat:"Electronics",cond:"Working",notes:"Pendrives, keyboard/mouse dongles, Raspberry Pi Zero accessories"},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Jumper Wires",cat:"Electronics Components",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"USB Switch",cat:"Electronics",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Big Wired Microphone",cat:"Audio",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Boat Wireless Earphones",cat:"Audio",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"L-Shaped Screwdriver Set",cat:"Tools",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"LEDs & Capacitors",cat:"Electronics Components",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"M3 Phillips Pan Screw Set",cat:"Hardware",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Raspberry Pi 4",cat:"Single Board Computer",cond:"Working",notes:"Main Raspberry Pi"},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"HDMI Bi-Directional Switch",cat:"Electronics",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Raspberry Pi Case / HDD Dock",cat:"Electronics",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Raspberry Pi Zero 2W",cat:"Single Board Computer",cond:"Working",notes:"With memory card"},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Mini HDMI to HDMI Adapter",cat:"Adapter",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"SATA to USB Adapters ×2",cat:"Adapter",cond:"Working",notes:"Connect HDD/SSD via USB"},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"USB-A Male to USB-B Female Adapter",cat:"Adapter",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"128 GB SSD",cat:"Storage",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Small Phone Chargers",cat:"Power",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Capacitors",cat:"Electronics Components",cond:"Working",notes:"Loose capacitors"},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Magnets",cat:"Hardware",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"AAA Batteries",cat:"Battery",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Cutter Set",cat:"Tools",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Isopropyl Alcohol ×2",cat:"Cleaning",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"SD Card Cases ×2",cat:"Storage",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Wire Organizer Stickers",cat:"Cable Management",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Small Cable Organizer",cat:"Cable Management",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Mouse (Dongle Lost)",cat:"Computer Accessory",cond:"Working",notes:"USB receiver missing"},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Battery Clip Holders (+/-)",cat:"Electronics Components",cond:"Working",notes:"Battery terminal clips"},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"Small Diary",cat:"Stationery",cond:"Working",notes:""},
-    {box:4,boxDesc:"Raspberry Pi, Electronics, Components, Adapters & Repair Tools",item:"AAA Battery",cat:"Battery",cond:"Working",notes:"Single cell"},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Black Goggles",cat:"Eyewear",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Jawa Bike Service Kit",cat:"Vehicle Tools",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Keyboard Mat",cat:"Computer Accessory",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Usha Machine Oil",cat:"Lubricant",cond:"Working",notes:"Machine lubricating oil"},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Raspberry Pi Zero 2W Micro USB Chargers ×2",cat:"Power",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Very Old Nokia Chargers ×2",cat:"Power",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Jump Rope",cat:"Fitness",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"3D Printed Black Part",cat:"3D Printing",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"3D Printed Wire Roller",cat:"3D Printing",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Jawa Side Mirror",cat:"Vehicle Part",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Shubham's Black Spectacles",cat:"Eyewear",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Spare Power Lens (Shubham)",cat:"Eyewear",cond:"Spare",notes:"Broken spectacles lens"},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Gym Roller",cat:"Fitness",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Cable Organizer",cat:"Cable Management",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Transistor Battery",cat:"Electronics",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Earbud Rubber Tips",cat:"Audio Accessory",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Old Screwdriver Set",cat:"Tools",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Balloon Tape Stickers",cat:"Supplies",cond:"Working",notes:"Double-sided adhesive"},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Samsung TV Adapter",cat:"Electronics",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Dual Point Compass",cat:"Stationery",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Raspberry Pi Zero 2W Cover",cat:"3D Printing / SBC",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Paper Clips ×2",cat:"Stationery",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Hand Tally Counter",cat:"Measuring Tool",cond:"Working",notes:"Manual click counter"},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Mobile Touch Pen (Stylus)",cat:"Mobile Accessory",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Pencil Box",cat:"Stationery",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Erasers ×2",cat:"Stationery",cond:"Working",notes:""},
-    {box:5,boxDesc:"Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",item:"Sharpeners ×2",cat:"Stationery",cond:"Working",notes:""},
-];
+let BOX_DESCS = {};
 
-const BOX_DESCS = {
-    1: "Electronics, Audio, Vehicle Accessories",
-    2: "Tools, Electronics, Electrical, 3D Printing & DIY Accessories",
-    3: "Electrical Accessories, Sports, Games & Miscellaneous",
-    4: "Raspberry Pi, Electronics, Components, Adapters & Repair Tools",
-    5: "Vehicle Accessories, Raspberry Pi, Stationery & Miscellaneous",
-};
+function jsonToInventory(data) {
+    const items = [];
+    BOX_DESCS = {};
+    for (const [boxNum, boxData] of Object.entries(data.boxes)) {
+        const b = Number(boxNum);
+        BOX_DESCS[b] = boxData.description;
+        for (const it of boxData.items) {
+            items.push({
+                box: b,
+                boxDesc: boxData.description,
+                item: it.item,
+                cat: it.category,
+                cond: it.condition,
+                notes: it.notes || ''
+            });
+        }
+    }
+    return items;
+}
 
 const COND_CLS = {Working:'working',Broken:'broken','Not Working':'notworking',Spare:'spare'};
 
@@ -636,13 +510,28 @@ let sortCol = null;
 let sortAsc = true;
 let activeBox = 0;
 
-function load() {
+async function load() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
         inventory = JSON.parse(saved);
+        if (!Object.keys(BOX_DESCS).length) {
+            try {
+                const resp = await fetch('data.json');
+                const data = await resp.json();
+                for (const [k, v] of Object.entries(data.boxes)) BOX_DESCS[Number(k)] = v.description;
+            } catch(e) {
+                for (const it of inventory) if (it.box && it.boxDesc) BOX_DESCS[it.box] = it.boxDesc;
+            }
+        }
     } else {
-        inventory = JSON.parse(JSON.stringify(DEFAULT_DATA));
-        save();
+        try {
+            const resp = await fetch('data.json');
+            const data = await resp.json();
+            inventory = jsonToInventory(data);
+            save();
+        } catch(e) {
+            inventory = [];
+        }
     }
 }
 
@@ -964,12 +853,13 @@ function applyHash() {
     if (q) document.getElementById('search').value = q;
 }
 
-// Init
-load();
-applyHash();
-renderBoxTabs();
-renderCatFilter();
-refresh();
+(async function init() {
+    await load();
+    applyHash();
+    renderBoxTabs();
+    renderCatFilter();
+    refresh();
+})();
 
 document.getElementById('search').addEventListener('input', refresh);
 document.getElementById('cat-filter').addEventListener('change', refresh);
