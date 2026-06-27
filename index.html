@@ -560,6 +560,8 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
             <option value="3">Box 3</option>
             <option value="4">Box 4</option>
             <option value="5">Box 5</option>
+            <option value="8">Box 8</option>
+            <option value="9">Box 9</option>
         </select>
     </div>
     <div class="form-group">
@@ -622,6 +624,14 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
         <a href="box5.html" class="page-card">
             <strong>box5.html</strong>
             <p>Box 5 — Vehicle, RPi, Stationery & Misc</p>
+        </a>
+        <a href="box8.html" class="page-card">
+            <strong>box8.html</strong>
+            <p>Box 8 — 3D Printing, Computer Accessories & Misc</p>
+        </a>
+        <a href="box9.html" class="page-card">
+            <strong>box9.html</strong>
+            <p>Box 9 — Cables, Chargers & Connectivity</p>
         </a>
         <div class="page-card">
             <strong>data.json</strong>
@@ -756,7 +766,8 @@ function getCategories() {
 function renderBoxTabs() {
     const tabs = document.getElementById('box-tabs');
     let html = `<button class="box-tab ${activeBox === 0 ? 'active' : ''}" onclick="setBox(0)">All</button>`;
-    for (let b = 1; b <= 5; b++) {
+    const boxCount = Math.max(5, ...inventory.map(i => i.box));
+    for (let b = 1; b <= boxCount; b++) {
         html += `<button class="box-tab ${activeBox === b ? 'active' : ''}" onclick="setBox(${b})">Box ${b}</button>`;
     }
     tabs.innerHTML = html;
@@ -1055,7 +1066,7 @@ function applyHash() {
     const hash = location.hash.replace('#', '');
     const params = new URLSearchParams(hash);
     const box = parseInt(params.get('box'));
-    if (box >= 1 && box <= 5) {
+    if (box >= 1) {
         activeBox = box;
         renderBoxTabs();
     }

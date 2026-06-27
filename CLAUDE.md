@@ -4,30 +4,41 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Static HTML home inventory system. Each file (`box1.html` through `box5.html`) is a standalone page cataloging the contents of a physical storage box. No build tools, no JavaScript, no shared assets.
+Searchable home inventory web app with printable box labels. Tracks items across 7 physical storage boxes (numbered 1–5, 8–9). Hosted on GitHub Pages. No build tools, no frameworks.
 
 ## Architecture
 
-- **box1.html** is the main overview page (title "Home Inventory"). It includes aggregate summary cards (Total Boxes, Total Items, Broken Items, Working Items) that must be kept in sync when boxes are added/removed or item counts change.
-- **box2.html through box5.html** are per-box detail pages (title "Inventory - Box N"). Each has its own summary cards showing that box's stats.
-- Every file has fully self-contained inline CSS and HTML — there is no shared stylesheet. Boxes 2-5 share a consistent style (blue left-border on summary cards, `#0d6efd` theme). Box 1 uses a slightly different style (card with box-shadow, `#007bff` theme).
+- **index.html** — Main search app (dark mode). Search, filter by box/category, add/edit/delete items, sort, export CSV/JSON. Has an Info panel with all project details. Loads inventory from `data.json` on first visit, saves edits to localStorage.
+- **data.json** — Single source of truth for all inventory data. Structure: `{boxes: {N: {description, items: [{item, category, condition, notes}]}}}`. Edit this file to permanently add/remove items.
+- **print.html** — Printable labels for physical boxes, A-Z sorted, with QR codes linking to `index.html#box=N`. Uses `api.qrserver.com` for QR generation.
+- **box1.html** — Overview page (title "Home Inventory") with aggregate summary cards.
+- **box2.html through box9.html** — Per-box detail pages (title "Inventory - Box N"). Static HTML, self-contained CSS.
+- **.nojekyll** — Prevents GitHub Pages Jekyll processing.
 
 ## Item Table Schema
 
 Each box contains a table with columns: `#`, `Item`, `Category`, `Condition`, `Notes`.
 
 Condition badges use these CSS classes:
-- `.working` (green `#28a745`) — functional items
-- `.broken` (red `#dc3545`) — non-functional items
-- `.notworking` (orange `#fd7e14`) — not working but not physically broken
-- `.spare` (yellow `#ffc107`, black text) — spare parts
+- `.working` (green) — functional items
+- `.broken` (red) — non-functional items
+- `.notworking` (orange) — not working but not physically broken
+- `.spare` (yellow, black text) — spare parts
 
 ## When Adding or Editing Items
 
-- Update the summary card counts in the same file (Total Items, Working, Broken, etc.)
-- If adding/removing a box or changing totals, update the aggregate counts in `box1.html`
-- Keep row numbering sequential within each table
-- Note: `box2.html` through `box5.html` are wrapped in markdown code fences (`` ```html ``) — preserve this if editing those files
+1. Edit `data.json` — add/remove items in the appropriate box
+2. Update `index.html` box select dropdown if adding a new box number
+3. Add box data to `print.html` `BOX_DATA` object if adding a new box
+4. Create a `boxN.html` file for any new box
+5. Update the info panel in `index.html` if adding new pages
+6. If users have cached localStorage data, they need to clear it to see data.json changes
+
+## Hosting
+
+- **Repo:** github.com/Shubham3521/inventory
+- **Live:** shubham3521.github.io/inventory/index.html
+- **Labels:** shubham3521.github.io/inventory/print.html
 
 ## Viewing
 

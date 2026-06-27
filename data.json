@@ -161,6 +161,38 @@
         {"item": "Erasers ×2", "category": "Stationery", "condition": "Working", "notes": ""},
         {"item": "Sharpeners ×2", "category": "Stationery", "condition": "Working", "notes": ""}
       ]
+    },
+    "8": {
+      "description": "3D Printing, Computer Accessories & Miscellaneous",
+      "items": [
+        {"item": "3D Printed Wall Organizer", "category": "3D Printing", "condition": "Working", "notes": ""},
+        {"item": "Broken Portronics Mouse", "category": "Computer Accessory", "condition": "Broken", "notes": ""},
+        {"item": "Monitor Stand", "category": "Computer Accessory", "condition": "Working", "notes": ""},
+        {"item": "3D Printed Toy Gun", "category": "3D Printing", "condition": "Working", "notes": "Toy model"},
+        {"item": "20 L Water Bottle Dispenser", "category": "Home Utility", "condition": "Working", "notes": "Manual water dispenser"},
+        {"item": "3D Printed Miniature of Shubham", "category": "3D Printing", "condition": "Working", "notes": "Miniature figurine"},
+        {"item": "Water Dispenser Pipe", "category": "Home Utility", "condition": "Working", "notes": "For 20 L bottle dispenser"},
+        {"item": "Mouse Pads ×4", "category": "Computer Accessory", "condition": "Working", "notes": ""},
+        {"item": "Old TFT Headphones ×2", "category": "Audio", "condition": "Working", "notes": "From TFT company"},
+        {"item": "Small Computer Fan", "category": "Computer Component", "condition": "Working", "notes": ""},
+        {"item": "Broken HP Mouse", "category": "Computer Accessory", "condition": "Broken", "notes": ""},
+        {"item": "Broken Coffee Mug", "category": "Kitchen", "condition": "Broken", "notes": ""},
+        {"item": "White 3D Printing Filament", "category": "3D Printing", "condition": "Working", "notes": ""}
+      ]
+    },
+    "9": {
+      "description": "Cables, Chargers & Connectivity Accessories",
+      "items": [
+        {"item": "All LAN Cables", "category": "Networking", "condition": "Working", "notes": "Various lengths"},
+        {"item": "All USB-C & Micro USB Cables", "category": "USB Cables", "condition": "Working", "notes": "Includes short and long cables"},
+        {"item": "TV & Monitor Power Cables", "category": "Power Cables", "condition": "Working", "notes": ""},
+        {"item": "HDMI Cables", "category": "Video Cables", "condition": "Working", "notes": ""},
+        {"item": "Acer Laptop Charger", "category": "Laptop Charger", "condition": "Working", "notes": ""},
+        {"item": "USB-A to USB-A Cable", "category": "USB Cable", "condition": "Working", "notes": ""},
+        {"item": "Wireless Smartwatch Charger", "category": "Wearable Charger", "condition": "Working", "notes": ""},
+        {"item": "3.5 mm Audio Jack Cable", "category": "Audio Cable", "condition": "Working", "notes": "AUX cable"},
+        {"item": "Camera Cable", "category": "Camera Accessory", "condition": "Working", "notes": ""}
+      ]
     }
   }
 }

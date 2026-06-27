@@ -347,6 +347,38 @@ const BOX_DATA = {
             {name:"Usha Machine Oil",cond:"Working",note:"Machine lubricating oil"},
             {name:"Very Old Nokia Chargers ×2",cond:"Working",note:""},
         ]
+    },
+    8: {
+        desc: "3D Printing, Computer Accessories & Miscellaneous",
+        items: [
+            {name:"20 L Water Bottle Dispenser",cond:"Working",note:"Manual water dispenser"},
+            {name:"3D Printed Miniature of Shubham",cond:"Working",note:"Miniature figurine"},
+            {name:"3D Printed Toy Gun",cond:"Working",note:"Toy model"},
+            {name:"3D Printed Wall Organizer",cond:"Working",note:""},
+            {name:"Broken Coffee Mug",cond:"Broken",note:""},
+            {name:"Broken HP Mouse",cond:"Broken",note:""},
+            {name:"Broken Portronics Mouse",cond:"Broken",note:""},
+            {name:"Monitor Stand",cond:"Working",note:""},
+            {name:"Mouse Pads ×4",cond:"Working",note:""},
+            {name:"Old TFT Headphones ×2",cond:"Working",note:"From TFT company"},
+            {name:"Small Computer Fan",cond:"Working",note:""},
+            {name:"Water Dispenser Pipe",cond:"Working",note:"For 20 L bottle dispenser"},
+            {name:"White 3D Printing Filament",cond:"Working",note:""},
+        ]
+    },
+    9: {
+        desc: "Cables, Chargers & Connectivity Accessories",
+        items: [
+            {name:"3.5 mm Audio Jack Cable",cond:"Working",note:"AUX cable"},
+            {name:"Acer Laptop Charger",cond:"Working",note:""},
+            {name:"All LAN Cables",cond:"Working",note:"Various lengths"},
+            {name:"All USB-C & Micro USB Cables",cond:"Working",note:"Includes short and long cables"},
+            {name:"Camera Cable",cond:"Working",note:""},
+            {name:"HDMI Cables",cond:"Working",note:""},
+            {name:"TV & Monitor Power Cables",cond:"Working",note:""},
+            {name:"USB-A to USB-A Cable",cond:"Working",note:""},
+            {name:"Wireless Smartwatch Charger",cond:"Working",note:""},
+        ]
     }
 };
 
@@ -371,7 +403,9 @@ function generateAll() {
     var pagesDiv = document.getElementById('pages');
     pagesDiv.innerHTML = '';
 
-    for (var box = 1; box <= 5; box++) {
+    var boxNums = Object.keys(BOX_DATA).map(Number).sort(function(a,b){return a-b});
+    for (var i = 0; i < boxNums.length; i++) {
+        var box = boxNums[i];
         var data = BOX_DATA[box];
         var url = baseUrl + '#box=' + box;
 
