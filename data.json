@@ -140,14 +140,7 @@
         {"item": "Small Diary", "category": "Stationery", "condition": "Working", "notes": "", "tags": "notebook diary journal writing pad notes pocket"},
         {"item": "AAA Battery", "category": "Battery", "condition": "Working", "notes": "Single cell", "tags": "battery cell AAA triple-A power single"},
         {"item": "IC Components Box", "category": "Electronics Components", "condition": "Working", "notes": "Compartmented box with ICs, chips, connectors, headers", "tags": "IC chip integrated circuit component box organizer header connector DIP socket"},
-        {"item": "Single-Core Wires (Multicolor)", "category": "Electronics Components", "condition": "Working", "notes": "Bag of colored wires for projects", "tags": "wire single core solid hookup colored breadboard project electronics jumper"},
-        {"item": "USB 2.0 All-in-One SSD Enclosure ×2", "category": "Storage", "condition": "Working", "notes": "", "tags": "USB 2.0 SSD enclosure case hard drive HDD external housing SATA adapter dock all-in-one"},
-        {"item": "Small Breakout Board / Module", "category": "Electronics Components", "condition": "Working", "notes": "Blue PCB module", "tags": "breakout board module PCB blue sensor arduino ESP component"},
-        {"item": "Perf Board / PCB Prototype Board", "category": "Electronics Components", "condition": "Working", "notes": "Green PCB with solder pads", "tags": "perf board perfboard PCB prototype solder pad green veroboard circuit"},
-        {"item": "Header Pins & Sockets (Assorted)", "category": "Electronics Components", "condition": "Working", "notes": "Male/female pin headers, various sizes", "tags": "header pin socket male female strip connector PCB breadboard 2.54mm"},
-        {"item": "JST Connector Wires (Small, Bagged)", "category": "Electronics Components", "condition": "Working", "notes": "2-pin JST connectors with short wires", "tags": "JST connector wire cable red black 2-pin plug socket battery"},
-        {"item": "JST Connector Wires (Long, Red/Black)", "category": "Electronics Components", "condition": "Working", "notes": "Longer red/black wires with JST connectors", "tags": "JST connector wire cable red black long power lead battery"},
-        {"item": "Nylon PCB Standoffs (White)", "category": "Hardware", "condition": "Working", "notes": "Plastic spacers for mounting boards", "tags": "standoff spacer nylon plastic white PCB mount screw M3 pillar"}
+        {"item": "Single-Core Wires (Multicolor)", "category": "Electronics Components", "condition": "Working", "notes": "Bag of colored wires for projects", "tags": "wire single core solid hookup colored breadboard project electronics jumper"}
       ]
     },
     "5": {
@@ -199,7 +192,14 @@
         {"item": "Broken HP Mouse", "category": "Computer Accessory", "condition": "Broken", "notes": "", "tags": "mouse HP broken PC laptop wired wireless"},
         {"item": "Broken Coffee Mug", "category": "Kitchen", "condition": "Broken", "notes": "", "tags": "mug cup coffee tea ceramic broken kitchen drinking"},
         {"item": "White 3D Printing Filament", "category": "3D Printing", "condition": "Working", "notes": "", "tags": "3d print filament PLA white spool material 1.75mm"},
-        {"item": "Transparent Pipe", "category": "Home Utility", "condition": "Working", "notes": "", "tags": "pipe tube transparent clear hose flexible plastic water"}
+        {"item": "Transparent Pipe", "category": "Home Utility", "condition": "Working", "notes": "", "tags": "pipe tube transparent clear hose flexible plastic water"},
+        {"item": "USB 2.0 All-in-One SSD Enclosure ×2", "category": "Storage", "condition": "Working", "notes": "", "tags": "USB 2.0 SSD enclosure case hard drive HDD external housing SATA adapter dock all-in-one"},
+        {"item": "Small Breakout Board / Module", "category": "Electronics Components", "condition": "Working", "notes": "Blue PCB module", "tags": "breakout board module PCB blue sensor arduino ESP component"},
+        {"item": "Perf Board / PCB Prototype Board", "category": "Electronics Components", "condition": "Working", "notes": "Green PCB with solder pads", "tags": "perf board perfboard PCB prototype solder pad green veroboard circuit"},
+        {"item": "Header Pins & Sockets (Assorted)", "category": "Electronics Components", "condition": "Working", "notes": "Male/female pin headers, various sizes", "tags": "header pin socket male female strip connector PCB breadboard 2.54mm"},
+        {"item": "JST Connector Wires (Small, Bagged)", "category": "Electronics Components", "condition": "Working", "notes": "2-pin JST connectors with short wires", "tags": "JST connector wire cable red black 2-pin plug socket battery"},
+        {"item": "JST Connector Wires (Long, Red/Black)", "category": "Electronics Components", "condition": "Working", "notes": "Longer red/black wires with JST connectors", "tags": "JST connector wire cable red black long power lead battery"},
+        {"item": "Nylon PCB Standoffs (White)", "category": "Hardware", "condition": "Working", "notes": "Plastic spacers for mounting boards", "tags": "standoff spacer nylon plastic white PCB mount screw M3 pillar"}
       ]
     },
     "9": {
