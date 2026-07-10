@@ -533,6 +533,7 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
         <button class="btn btn-success" onclick="openModal()">+ Add Item</button>
         <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
         <button class="btn btn-outline" onclick="exportJSON()">Export JSON</button>
+        <button class="btn btn-outline" onclick="resetData()" title="Reload from data.json">&#8635; Reset</button>
         <button class="btn btn-outline" onclick="openInfo()" title="About this app">&#9432; Info</button>
     </div>
 </div>
@@ -772,10 +773,10 @@ function getCategories() {
 function renderBoxTabs() {
     const tabs = document.getElementById('box-tabs');
     let html = `<button class="box-tab ${activeBox === 0 ? 'active' : ''}" onclick="setBox(0)">All</button>`;
-    const boxCount = Math.max(5, ...inventory.map(i => i.box));
-    for (let b = 1; b <= boxCount; b++) {
+    const boxNums = [...new Set(inventory.map(i => i.box))].sort((a, b) => a - b);
+    boxNums.forEach(b => {
         html += `<button class="box-tab ${activeBox === b ? 'active' : ''}" onclick="setBox(${b})">Box ${b}</button>`;
-    }
+    });
     tabs.innerHTML = html;
 }
 
@@ -1104,6 +1105,15 @@ document.addEventListener('keydown', function(e) {
         document.getElementById('search').focus();
     }
 });
+
+async function resetData() {
+    if (!confirm('Reload inventory from data.json? This will overwrite any local edits.')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    await load();
+    renderBoxTabs();
+    renderCatFilter();
+    refresh();
+}
 
 function openInfo() { document.getElementById('info-overlay').classList.add('open'); }
 function closeInfo() { document.getElementById('info-overlay').classList.remove('open'); }
