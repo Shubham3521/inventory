@@ -199,7 +199,11 @@
         {"item": "Header Pins & Sockets (Assorted)", "category": "Electronics Components", "condition": "Working", "notes": "Male/female pin headers, various sizes", "tags": "header pin socket male female strip connector PCB breadboard 2.54mm"},
         {"item": "JST Connector Wires (Small, Bagged)", "category": "Electronics Components", "condition": "Working", "notes": "2-pin JST connectors with short wires", "tags": "JST connector wire cable red black 2-pin plug socket battery"},
         {"item": "JST Connector Wires (Long, Red/Black)", "category": "Electronics Components", "condition": "Working", "notes": "Longer red/black wires with JST connectors", "tags": "JST connector wire cable red black long power lead battery"},
-        {"item": "Nylon PCB Standoffs (White)", "category": "Hardware", "condition": "Working", "notes": "Plastic spacers for mounting boards", "tags": "standoff spacer nylon plastic white PCB mount screw M3 pillar"}
+        {"item": "Nylon PCB Standoffs (White)", "category": "Hardware", "condition": "Working", "notes": "Plastic spacers for mounting boards", "tags": "standoff spacer nylon plastic white PCB mount screw M3 pillar"},
+        {"item": "Breadboard", "category": "Electronics Components", "condition": "Working", "notes": "", "tags": "breadboard prototype solderless circuit board electronics DIY project wiring"},
+        {"item": "Chandelier Glasses ×3", "category": "Home Decor", "condition": "Broken", "notes": "Broken glass pieces", "tags": "chandelier glass crystal pendant light hanging decor broken spare"},
+        {"item": "Small Plastic Pouches (Electronic Components)", "category": "Storage", "condition": "Working", "notes": "Ziplock bags for storing small parts", "tags": "pouch bag plastic ziplock small parts storage organizer electronics component"},
+        {"item": "Soldered PCB Board (with Wires Attached)", "category": "Electronics", "condition": "Working", "notes": "PCB with components and wires soldered on", "tags": "PCB board soldered wire attached circuit custom project DIY assembled"}
       ]
     },
     "9": {
