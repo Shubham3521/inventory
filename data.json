@@ -60,7 +60,18 @@
         {"item": "Measuring Tape", "category": "Measuring", "condition": "Working", "notes": "", "tags": "tape measure retractable ruler inch cm feet"},
         {"item": "Single Battery Holder", "category": "Electronics", "condition": "Working", "notes": "", "tags": "battery case holder clip cell AA AAA electronics DIY"},
         {"item": "2-Pin Plug", "category": "Electrical", "condition": "Working", "notes": "", "tags": "plug socket pin electrical connector power"},
-        {"item": "3D Printed Screw Size Gauge (M2/M3)", "category": "3D Printing", "condition": "Working", "notes": "Measures screw sizes", "tags": "3d print gauge screw bolt M2 M3 measure size check tool"}
+        {"item": "3D Printed Screw Size Gauge (M2/M3)", "category": "3D Printing", "condition": "Working", "notes": "Measures screw sizes", "tags": "3d print gauge screw bolt M2 M3 measure size check tool"},
+        {"item": "Wire Cutter", "category": "Tools", "condition": "Working", "notes": "", "tags": "wire cutter plier snip nipper cut cable trim flush diagonal"},
+        {"item": "Line Tester (Screwdriver Type)", "category": "Electrical", "condition": "Working", "notes": "Tests live wires / electricity", "tags": "tester screwdriver line voltage electric phase detector neon test pen probe"},
+        {"item": "FeviKwik (Small, ₹5)", "category": "Adhesive", "condition": "Working", "notes": "Small tube", "tags": "super glue instant bond adhesive fix quick cyanoacrylate fevikwik small tube"},
+        {"item": "Precision Screwdriver Set (with Bits)", "category": "Tools", "condition": "Working", "notes": "Interchangeable bits in plastic case", "tags": "screwdriver precision bit set toolkit repair phone laptop small torx hex phillips"},
+        {"item": "Steel Wool Scrubber", "category": "Cleaning", "condition": "Working", "notes": "", "tags": "steel wool wire scrubber cleaning metal ball scrub rust remove"},
+        {"item": "Soldering Flux", "category": "Tools", "condition": "Working", "notes": "Red container", "tags": "flux soldering paste rosin solder aid tin clean PCB"},
+        {"item": "Needle / Pin Tool", "category": "Tools", "condition": "Working", "notes": "", "tags": "needle pin tool probe pointed awl poking piercing"},
+        {"item": "Desoldering Wick", "category": "Tools", "condition": "Working", "notes": "Wick brand", "tags": "desolder wick braid solder removal copper desoldering wick clean PCB"},
+        {"item": "Solder Wire", "category": "Tools", "condition": "Working", "notes": "Green spool", "tags": "solder wire tin lead rosin core soldering roll spool"},
+        {"item": "Soldering Iron Stand", "category": "Tools", "condition": "Working", "notes": "Metal stand with spring holder", "tags": "soldering iron stand holder base spring rest metal"},
+        {"item": "Small Craft Knife", "category": "Tools", "condition": "Working", "notes": "", "tags": "craft knife small pen cutter blade hobby precision cutting scalpel"}
       ]
     },
     "3": {
@@ -127,7 +138,9 @@
         {"item": "Mouse (Dongle Lost)", "category": "Computer Accessory", "condition": "Working", "notes": "USB receiver missing", "tags": "wireless mouse no dongle receiver lost PC laptop"},
         {"item": "Battery Clip Holders (+/-)", "category": "Electronics Components", "condition": "Working", "notes": "Battery terminal clips", "tags": "battery clip holder snap connector 9V terminal positive negative"},
         {"item": "Small Diary", "category": "Stationery", "condition": "Working", "notes": "", "tags": "notebook diary journal writing pad notes pocket"},
-        {"item": "AAA Battery", "category": "Battery", "condition": "Working", "notes": "Single cell", "tags": "battery cell AAA triple-A power single"}
+        {"item": "AAA Battery", "category": "Battery", "condition": "Working", "notes": "Single cell", "tags": "battery cell AAA triple-A power single"},
+        {"item": "IC Components Box", "category": "Electronics Components", "condition": "Working", "notes": "Compartmented box with ICs, chips, connectors, headers", "tags": "IC chip integrated circuit component box organizer header connector DIP socket"},
+        {"item": "Single-Core Wires (Multicolor)", "category": "Electronics Components", "condition": "Working", "notes": "Bag of colored wires for projects", "tags": "wire single core solid hookup colored breadboard project electronics jumper"}
       ]
     },
     "5": {
@@ -159,7 +172,8 @@
         {"item": "Mobile Touch Pen (Stylus)", "category": "Mobile Accessory", "condition": "Working", "notes": "", "tags": "stylus pen touch screen tablet phone drawing writing"},
         {"item": "Pencil Box", "category": "Stationery", "condition": "Working", "notes": "", "tags": "pencil case box pouch stationery holder"},
         {"item": "Erasers ×2", "category": "Stationery", "condition": "Working", "notes": "", "tags": "eraser rubber pencil clean remove"},
-        {"item": "Sharpeners ×2", "category": "Stationery", "condition": "Working", "notes": "", "tags": "sharpener pencil blade sharpen point"}
+        {"item": "Sharpeners ×2", "category": "Stationery", "condition": "Working", "notes": "", "tags": "sharpener pencil blade sharpen point"},
+        {"item": "Apsara Charcoal Pencil", "category": "Stationery", "condition": "Working", "notes": "", "tags": "apsara charcoal pencil drawing sketch art shading black"}
       ]
     },
     "8": {
@@ -177,7 +191,8 @@
         {"item": "Small Computer Fan", "category": "Computer Component", "condition": "Working", "notes": "", "tags": "fan cooling PC case 12V USB small quiet exhaust"},
         {"item": "Broken HP Mouse", "category": "Computer Accessory", "condition": "Broken", "notes": "", "tags": "mouse HP broken PC laptop wired wireless"},
         {"item": "Broken Coffee Mug", "category": "Kitchen", "condition": "Broken", "notes": "", "tags": "mug cup coffee tea ceramic broken kitchen drinking"},
-        {"item": "White 3D Printing Filament", "category": "3D Printing", "condition": "Working", "notes": "", "tags": "3d print filament PLA white spool material 1.75mm"}
+        {"item": "White 3D Printing Filament", "category": "3D Printing", "condition": "Working", "notes": "", "tags": "3d print filament PLA white spool material 1.75mm"},
+        {"item": "Transparent Pipe", "category": "Home Utility", "condition": "Working", "notes": "", "tags": "pipe tube transparent clear hose flexible plastic water"}
       ]
     },
     "9": {
@@ -192,6 +207,18 @@
         {"item": "Wireless Smartwatch Charger", "category": "Wearable Charger", "condition": "Working", "notes": "", "tags": "watch charger wireless magnetic Qi charging pad smartwatch"},
         {"item": "3.5 mm Audio Jack Cable", "category": "Audio Cable", "condition": "Working", "notes": "AUX cable", "tags": "AUX audio jack 3.5mm cable headphone speaker stereo wire car"},
         {"item": "Camera Cable", "category": "Camera Accessory", "condition": "Working", "notes": "", "tags": "camera USB cable data transfer photo video mini micro"}
+      ]
+    },
+    "10": {
+      "description": "Storage & Peripherals",
+      "items": [
+        {"item": "USB 2.0 All-in-One SSD Enclosure ×2", "category": "Storage", "condition": "Working", "notes": "", "tags": "USB 2.0 SSD enclosure case hard drive HDD external housing SATA adapter dock all-in-one"},
+        {"item": "Small Breakout Board / Module", "category": "Electronics Components", "condition": "Working", "notes": "Blue PCB module", "tags": "breakout board module PCB blue sensor arduino ESP component"},
+        {"item": "Perf Board / PCB Prototype Board", "category": "Electronics Components", "condition": "Working", "notes": "Green PCB with solder pads", "tags": "perf board perfboard PCB prototype solder pad green veroboard circuit"},
+        {"item": "Header Pins & Sockets (Assorted)", "category": "Electronics Components", "condition": "Working", "notes": "Male/female pin headers, various sizes", "tags": "header pin socket male female strip connector PCB breadboard 2.54mm"},
+        {"item": "JST Connector Wires (Small, Bagged)", "category": "Electronics Components", "condition": "Working", "notes": "2-pin JST connectors with short wires", "tags": "JST connector wire cable red black 2-pin plug socket battery"},
+        {"item": "JST Connector Wires (Long, Red/Black)", "category": "Electronics Components", "condition": "Working", "notes": "Longer red/black wires with JST connectors", "tags": "JST connector wire cable red black long power lead battery"},
+        {"item": "Nylon PCB Standoffs (White)", "category": "Hardware", "condition": "Working", "notes": "Plastic spacers for mounting boards", "tags": "standoff spacer nylon plastic white PCB mount screw M3 pillar"}
       ]
     }
   }
