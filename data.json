@@ -38,22 +38,22 @@
         {"item": "Big Tape", "category": "Supplies", "condition": "Working", "notes": "", "tags": "packing tape wide adhesive brown transparent"},
         {"item": "Electronic Cleaning Kit (7-in-1)", "category": "Cleaning", "condition": "Working", "notes": "Laptop, Keyboard, AirPods & Camera Cleaning Kit", "tags": "clean brush wipe cloth dust laptop keyboard airpods camera lens"},
         {"item": "Multi Plug Adapter", "category": "Electrical", "condition": "Working", "notes": "", "tags": "plug socket adapter multi extension board universal"},
-        {"item": "Soldering Iron ×2", "category": "Tools", "condition": "Working", "notes": "", "tags": "solder soldering station iron tip tin wire electronics repair"},
+        {"item": "Soldering Iron ×3", "category": "Tools", "condition": "Working", "notes": "", "tags": "solder soldering station iron tip tin wire electronics repair"},
         {"item": "Big Screwdriver Set", "category": "Tools", "condition": "Working", "notes": "", "tags": "screwdriver phillips flathead precision toolkit repair"},
         {"item": "Multimeter", "category": "Electronics", "condition": "Working", "notes": "", "tags": "voltmeter ammeter ohm tester meter DMM electric test probe"},
+        {"item": "Multimeter Probe Wires (Black & Red)", "category": "Electronics", "condition": "Working", "notes": "Test leads", "tags": "multimeter probe wire test lead cable black red DMM tester banana pin"},
         {"item": "Wireless Bluetooth Selfie Stick Remote (R1)", "category": "Mobile Accessory", "condition": "Working", "notes": "Black, Bluetooth shutter remote", "tags": "selfie remote shutter bluetooth camera phone click trigger"},
         {"item": "Scissors", "category": "Tools", "condition": "Working", "notes": "", "tags": "cut scissors snip trim paper craft"},
         {"item": "Fevicol", "category": "Adhesive", "condition": "Working", "notes": "", "tags": "glue white adhesive craft school PVA stick"},
         {"item": "FeviKwik", "category": "Adhesive", "condition": "Working", "notes": "", "tags": "super glue instant bond adhesive fix quick cyanoacrylate"},
         {"item": "Snap-Off Utility Knife (Thermocol & Paper Cutter)", "category": "Tools", "condition": "Working", "notes": "Metal Grip", "tags": "cutter box cutter blade knife craft thermocol paper x-acto"},
-        {"item": "Stapler", "category": "Stationery", "condition": "Working", "notes": "", "tags": "stapler office paper clip bind"},
-        {"item": "Black Marker", "category": "Stationery", "condition": "Working", "notes": "", "tags": "marker pen permanent sharpie write label"},
+        {"item": "Stapler ×2", "category": "Stationery", "condition": "Working", "notes": "", "tags": "stapler office paper clip bind"},
         {"item": "Highlighter", "category": "Stationery", "condition": "Working", "notes": "", "tags": "fluorescent marker pen highlight neon study"},
         {"item": "Duracell AAA Batteries ×3", "category": "Batteries", "condition": "Working", "notes": "", "tags": "battery cell AAA triple-A duracell power remote"},
         {"item": "3D Printer Wire Rounder", "category": "3D Printing", "condition": "Working", "notes": "", "tags": "3d print filament spool wire guide tool"},
         {"item": "3D Printed Scraper", "category": "3D Printing", "condition": "Working", "notes": "", "tags": "3d print scraper spatula bed removal tool"},
         {"item": "Big Knife Cutter", "category": "Tools", "condition": "Working", "notes": "", "tags": "cutter blade large knife box heavy-duty"},
-        {"item": "Electrical Tape", "category": "Electrical", "condition": "Working", "notes": "", "tags": "insulation tape PVC black wire wrap electric"},
+        {"item": "Electrical Tape ×2", "category": "Electrical", "condition": "Working", "notes": "", "tags": "insulation tape PVC black wire wrap electric"},
         {"item": "Glue Gun Sticks", "category": "Supplies", "condition": "Working", "notes": "", "tags": "hot glue stick refill adhesive craft"},
         {"item": "Stapler Pins", "category": "Stationery", "condition": "Working", "notes": "", "tags": "staples refill pins clip"},
         {"item": "Spare Almirah Keys (Shubham's Floor) ×2", "category": "Keys", "condition": "Working", "notes": "Unknown lock", "tags": "key cupboard wardrobe almirah lock spare duplicate"},
@@ -63,7 +63,6 @@
         {"item": "3D Printed Screw Size Gauge (M2/M3)", "category": "3D Printing", "condition": "Working", "notes": "Measures screw sizes", "tags": "3d print gauge screw bolt M2 M3 measure size check tool"},
         {"item": "Wire Cutter", "category": "Tools", "condition": "Working", "notes": "", "tags": "wire cutter plier snip nipper cut cable trim flush diagonal"},
         {"item": "Line Tester (Screwdriver Type)", "category": "Electrical", "condition": "Working", "notes": "Tests live wires / electricity", "tags": "tester screwdriver line voltage electric phase detector neon test pen probe"},
-        {"item": "FeviKwik (Small, ₹5)", "category": "Adhesive", "condition": "Working", "notes": "Small tube", "tags": "super glue instant bond adhesive fix quick cyanoacrylate fevikwik small tube"},
         {"item": "Precision Screwdriver Set (with Bits)", "category": "Tools", "condition": "Working", "notes": "Interchangeable bits in plastic case", "tags": "screwdriver precision bit set toolkit repair phone laptop small torx hex phillips"},
         {"item": "Steel Wool Scrubber", "category": "Cleaning", "condition": "Working", "notes": "", "tags": "steel wool wire scrubber cleaning metal ball scrub rust remove"},
         {"item": "Soldering Flux", "category": "Tools", "condition": "Working", "notes": "Red container", "tags": "flux soldering paste rosin solder aid tin clean PCB"},
@@ -71,7 +70,20 @@
         {"item": "Desoldering Wick", "category": "Tools", "condition": "Working", "notes": "Wick brand", "tags": "desolder wick braid solder removal copper desoldering wick clean PCB"},
         {"item": "Solder Wire", "category": "Tools", "condition": "Working", "notes": "Green spool", "tags": "solder wire tin lead rosin core soldering roll spool"},
         {"item": "Soldering Iron Stand", "category": "Tools", "condition": "Working", "notes": "Metal stand with spring holder", "tags": "soldering iron stand holder base spring rest metal"},
-        {"item": "Small Craft Knife", "category": "Tools", "condition": "Working", "notes": "", "tags": "craft knife small pen cutter blade hobby precision cutting scalpel"}
+        {"item": "Small Craft Knife", "category": "Tools", "condition": "Working", "notes": "", "tags": "craft knife small pen cutter blade hobby precision cutting scalpel"},
+        {"item": "Brown Tape (Slim, Big Roll)", "category": "Supplies", "condition": "Working", "notes": "Slim brown packing tape, big roll", "tags": "brown tape slim big roll packing parcel adhesive cello box sealing"},
+        {"item": "Night LED Lamp", "category": "Lighting", "condition": "Working", "notes": "", "tags": "night led lamp light bedside small glow bulb plug"},
+        {"item": "Breadboard", "category": "Electronics Components", "condition": "Working", "notes": "", "tags": "breadboard prototype solderless circuit board electronics DIY project wiring"},
+        {"item": "Fire Torch Lighter", "category": "Tools", "condition": "Working", "notes": "", "tags": "torch lighter fire flame butane jet gas blow torch refillable"},
+        {"item": "Bulb with Holder", "category": "Electrical", "condition": "Working", "notes": "", "tags": "bulb holder light lamp socket b22 e27 electrical wiring"},
+        {"item": "Air Pump Kit (Air Pressure)", "category": "Tools", "condition": "Working", "notes": "", "tags": "air pump kit pressure inflator tyre tire ball cycle compressor needle"},
+        {"item": "Soldering Iron Kit", "category": "Tools", "condition": "Working", "notes": "", "tags": "soldering iron kit set tips case solder electronics repair"},
+        {"item": "Water Brush", "category": "Art Supplies", "condition": "Working", "notes": "", "tags": "water brush pen paint watercolor refillable art painting"},
+        {"item": "3D Printed Miniature of Shubham", "category": "3D Printing", "condition": "Working", "notes": "Miniature figurine", "tags": "3d print miniature figurine mini statue model self portrait shubham"},
+        {"item": "Lighter", "category": "Tools", "condition": "Working", "notes": "", "tags": "lighter fire flame gas cigarette pocket butane"},
+        {"item": "AAA Batteries (Unknown Brand) ×3", "category": "Batteries", "condition": "Working", "notes": "Brand unknown", "tags": "aaa battery batteries cell 1.5v remote unknown brand"},
+        {"item": "Tweezers", "category": "Tools", "condition": "Working", "notes": "", "tags": "tweezers forceps precision pick smd electronics grip"},
+        {"item": "Green Night Lamp", "category": "Lighting", "condition": "Working", "notes": "Green glow night light", "tags": "night lamp green led light glow bedside small plug"}
       ]
     },
     "3": {
@@ -100,7 +112,15 @@
         {"item": "Small Transparent Tape", "category": "Supplies", "condition": "Working", "notes": "", "tags": "cello tape clear adhesive small thin"},
         {"item": "Velcro Strip", "category": "Supplies", "condition": "Working", "notes": "", "tags": "velcro hook loop strip fastener adhesive stick attach"},
         {"item": "3D Printed Wire Rounder", "category": "3D Printing", "condition": "Working", "notes": "", "tags": "3d print wire cable filament rounder tool"},
-        {"item": "3D Printed Cable Roll-Up Organizer", "category": "3D Printing", "condition": "Working", "notes": "Cable Management Tool", "tags": "3d print cable organizer roll wrap tidy cord management"}
+        {"item": "3D Printed Cable Roll-Up Organizer", "category": "3D Printing", "condition": "Working", "notes": "Cable Management Tool", "tags": "3d print cable organizer roll wrap tidy cord management"},
+        {"item": "Swimming Cap", "category": "Sports", "condition": "Working", "notes": "", "tags": "swimming cap swim hat silicone pool water sports hair cover"},
+        {"item": "Nokia Foldable Phone", "category": "Electronics", "condition": "Working", "notes": "Flip / fold keypad phone", "tags": "nokia foldable flip phone mobile keypad feature phone old cell handset"},
+        {"item": "Fahrenheit Blue Spectacles", "category": "Eyewear", "condition": "Working", "notes": "Blue frame specs", "tags": "fahrenheit blue spectacles specs glasses eyeglasses frame eyewear lens"},
+        {"item": "Broken Mouse ×2", "category": "Computer Accessory", "condition": "Broken", "notes": "", "tags": "mouse broken computer PC laptop wired wireless not working"},
+        {"item": "Small CPU Fan", "category": "Computer Component", "condition": "Working", "notes": "", "tags": "cpu fan cooling small PC computer 12v heatsink exhaust"},
+        {"item": "Water Pump for 20 L Bottle", "category": "Home Utility", "condition": "Working", "notes": "Dispenser pump for 20 L water can", "tags": "water pump 20 litre bottle can dispenser manual press drinking"},
+        {"item": "TV Stand", "category": "Home", "condition": "Working", "notes": "", "tags": "tv stand mount television holder base table stand"},
+        {"item": "Broken Coffee Mixer", "category": "Kitchen", "condition": "Broken", "notes": "", "tags": "coffee mixer frother whisk blender beater broken kitchen"}
       ]
     },
     "4": {
@@ -114,7 +134,7 @@
         {"item": "Jumper Wires", "category": "Electronics Components", "condition": "Working", "notes": "", "tags": "jumper wire dupont breadboard connector male female M2M F2F M2F"},
         {"item": "USB Switch", "category": "Electronics", "condition": "Working", "notes": "", "tags": "USB toggle switch on-off power button inline"},
         {"item": "Big Wired Microphone", "category": "Audio", "condition": "Working", "notes": "", "tags": "mic karaoke singing wired recording"},
-        {"item": "Boat Wireless Earphones", "category": "Audio", "condition": "Working", "notes": "", "tags": "bluetooth earbuds wireless neckband headset music boat"},
+        {"item": "Boat Wireless Earphones ×2", "category": "Audio", "condition": "Working", "notes": "", "tags": "bluetooth earbuds wireless neckband headset music boat"},
         {"item": "L-Shaped Screwdriver Set", "category": "Tools", "condition": "Working", "notes": "", "tags": "allen key hex wrench L-shape screwdriver toolkit"},
         {"item": "LEDs & Capacitors", "category": "Electronics Components", "condition": "Working", "notes": "", "tags": "LED light diode capacitor component electronics circuit"},
         {"item": "M3 Phillips Pan Screw Set", "category": "Hardware", "condition": "Working", "notes": "", "tags": "screw bolt M3 phillips pan head hardware fastener"},
@@ -140,7 +160,12 @@
         {"item": "Small Diary", "category": "Stationery", "condition": "Working", "notes": "", "tags": "notebook diary journal writing pad notes pocket"},
         {"item": "AAA Battery", "category": "Battery", "condition": "Working", "notes": "Single cell", "tags": "battery cell AAA triple-A power single"},
         {"item": "IC Components Box", "category": "Electronics Components", "condition": "Working", "notes": "Compartmented box with ICs, chips, connectors, headers", "tags": "IC chip integrated circuit component box organizer header connector DIP socket"},
-        {"item": "Single-Core Wires (Multicolor)", "category": "Electronics Components", "condition": "Working", "notes": "Bag of colored wires for projects", "tags": "wire single core solid hookup colored breadboard project electronics jumper"}
+        {"item": "Single-Core Wires (Multicolor)", "category": "Electronics Components", "condition": "Working", "notes": "Bag of colored wires for projects", "tags": "wire single core solid hookup colored breadboard project electronics jumper"},
+        {"item": "Earplugs Set ×3", "category": "Personal Care", "condition": "Working", "notes": "3 sets of earplugs", "tags": "earplugs ear plugs set sleep noise reduction foam silicone hearing protection"},
+        {"item": "Microphone Foam Protector", "category": "Audio Accessory", "condition": "Working", "notes": "Foam windscreen cover for mic", "tags": "microphone mic foam protector windscreen cover sponge pop filter windshield audio recording"},
+        {"item": "3D Printed Wire Roller / Organizer", "category": "3D Printing", "condition": "Working", "notes": "Wire winder / cable organizer", "tags": "3d print wire roller organizer organiser winder spool cable management holder"},
+        {"item": "500 GB HDD with Cover ×2", "category": "Storage", "condition": "Working", "notes": "Hard drives with protective covers", "tags": "500GB 500 gb HDD hard disk drive storage cover case sleeve laptop 2.5 inch SATA backup"},
+        {"item": "Car 12V Plug Charger", "category": "Power", "condition": "Working", "notes": "Cigarette lighter socket USB charger", "tags": "car 12v 12 volt plug charger cigarette lighter socket usb adapter vehicle mobile charging"}
       ]
     },
     "5": {
@@ -173,34 +198,72 @@
         {"item": "Pencil Box", "category": "Stationery", "condition": "Working", "notes": "", "tags": "pencil case box pouch stationery holder"},
         {"item": "Erasers ×2", "category": "Stationery", "condition": "Working", "notes": "", "tags": "eraser rubber pencil clean remove"},
         {"item": "Sharpeners ×2", "category": "Stationery", "condition": "Working", "notes": "", "tags": "sharpener pencil blade sharpen point"},
-        {"item": "Apsara Charcoal Pencil", "category": "Stationery", "condition": "Working", "notes": "", "tags": "apsara charcoal pencil drawing sketch art shading black"}
+        {"item": "Apsara Charcoal Pencil", "category": "Stationery", "condition": "Working", "notes": "", "tags": "apsara charcoal pencil drawing sketch art shading black"},
+        {"item": "Shoe Horn (Black)", "category": "Footwear Accessory", "condition": "Working", "notes": "Helps slip feet into shoes", "tags": "shoe horn helper insert foot slip on footwear black shoehorn"},
+        {"item": "Tapo Wireless Smart Switch Adapter", "category": "Smart Home", "condition": "Working", "notes": "TP-Link Tapo Wi-Fi smart plug", "tags": "tapo tp-link smart plug switch wifi wireless socket adapter home automation alexa app control"},
+        {"item": "Apple MagSafe Charger Cable", "category": "Power", "condition": "Working", "notes": "Magnetic charging cable", "tags": "apple magsafe mag safe charger cable magnetic wireless iphone charging pad usb-c"},
+        {"item": "TP-Link Router Charger", "category": "Power", "condition": "Working", "notes": "Power adapter for TP-Link router", "tags": "tp-link tplink router charger adapter power supply wifi modem dc barrel"},
+        {"item": "Router Power Adapter", "category": "Power", "condition": "Working", "notes": "Spare power adapter for Wi-Fi router", "tags": "router power adapter charger supply wifi modem dc barrel plug spare"},
+        {"item": "Titan Wrist Watch", "category": "Wearable", "condition": "Working", "notes": "", "tags": "titan watch wrist analog time clock band strap wearable"},
+        {"item": "12-in-1 3D Printed Fidget Toy", "category": "3D Printing", "condition": "Working", "notes": "12 fidget designs in one", "tags": "fidget toy 3d print 12 in 1 stress relief spinner clicker desk toy"},
+        {"item": "Phone Holder", "category": "Mobile Accessory", "condition": "Working", "notes": "", "tags": "phone holder mobile stand mount grip desk cradle"},
+        {"item": "Transistor Radio Battery (Not Working)", "category": "Electronics", "condition": "Not Working", "notes": "Dead battery for transistor radio", "tags": "transistor radio battery dead not working cell old replace"}
+      ]
+    },
+    "6": {
+      "description": "Computer Accessories, Cables & Chargers",
+      "items": [
+        {"item": "Mouse Pads ×3", "category": "Computer Accessory", "condition": "Working", "notes": "", "tags": "mousepad mouse pad mat desk surface rubber gaming"},
+        {"item": "Logitech Earphones ×2", "category": "Audio", "condition": "Working", "notes": "Separate 3.5 mm jacks for audio and mic", "tags": "logitech earphones headset wired mic microphone 3.5mm dual jack audio PC laptop calls"},
+        {"item": "HP Laptop Chargers ×2", "category": "Power", "condition": "Working", "notes": "One is 65W", "tags": "hp laptop charger adapter 65w power supply pin notebook"},
+        {"item": "CPU / Monitor Power Cables ×5", "category": "Power Cable", "condition": "Working", "notes": "", "tags": "cpu monitor power cable desktop pc c13 kettle mains lead"},
+        {"item": "3-Pin Power Cable", "category": "Power Cable", "condition": "Working", "notes": "", "tags": "3 pin power cable mains plug lead"},
+        {"item": "Old Monitor Display Cables (Multi-Pin) ×2", "category": "Display Cable", "condition": "Working", "notes": "Very old CPU-to-monitor cable with lots of pins (VGA/DVI)", "tags": "vga dvi old monitor cpu display cable pins d-sub 15 pin"},
+        {"item": "LAN Cable", "category": "Networking", "condition": "Working", "notes": "", "tags": "lan ethernet network cable rj45 internet wired router"},
+        {"item": "Micro USB Cables ×2", "category": "USB Cable", "condition": "Working", "notes": "", "tags": "micro usb cable charging data android"},
+        {"item": "Micro USB Charger", "category": "Power", "condition": "Working", "notes": "", "tags": "micro usb charger adapter android phone charging"},
+        {"item": "HDMI Cables ×4", "category": "Display Cable", "condition": "Working", "notes": "", "tags": "hdmi cable tv monitor display video"},
+        {"item": "Trimmer Chargers ×3", "category": "Power", "condition": "Working", "notes": "", "tags": "trimmer charger cable shaver beard grooming adapter"},
+        {"item": "USB Extension Cable", "category": "USB Cable", "condition": "Working", "notes": "", "tags": "usb extension extender cable longer lead"},
+        {"item": "USB Male-to-Female Cable", "category": "USB Cable", "condition": "Working", "notes": "", "tags": "usb male female cable extension adapter"},
+        {"item": "USB-A to USB-A Cables ×3", "category": "USB Cable", "condition": "Working", "notes": "", "tags": "usb a to usb a male cable data"},
+        {"item": "3.5 mm to 3.5 mm Audio (AUX) Cable", "category": "Audio Cable", "condition": "Working", "notes": "", "tags": "3.5mm aux audio jack cable stereo male headphone"},
+        {"item": "Old Speaker Cable Connectors ×2", "category": "Audio Cable", "condition": "Working", "notes": "", "tags": "speaker cable connector wire old audio"},
+        {"item": "3.5 mm Audio + Mic Splitter Cable", "category": "Audio Cable", "condition": "Working", "notes": "Splits into separate audio and microphone jacks", "tags": "3.5mm splitter audio microphone mic headset y cable trrs"},
+        {"item": "Old TV-to-DVD Connector Cable", "category": "AV Cable", "condition": "Working", "notes": "Likely RCA / AV cable", "tags": "tv dvd rca av composite cable red white yellow old connector"},
+        {"item": "SATA HDD Connector Cables ×2", "category": "Storage", "condition": "Working", "notes": "", "tags": "sata hdd hard disk cable data connector"},
+        {"item": "Unknown Subwoofer / Front Speaker Cable", "category": "Audio Cable", "condition": "Working", "notes": "Purpose unconfirmed", "tags": "subwoofer front speaker cable unknown audio home theater"},
+        {"item": "Custom Female-to-Female 220V Cable", "category": "Power Cable", "condition": "Working", "notes": "Customized mains cable", "tags": "220v female to female custom power cable mains"},
+        {"item": "USB-C Cable", "category": "USB Cable", "condition": "Working", "notes": "", "tags": "usb c type-c cable charging data"},
+        {"item": "Unknown Cable (3.5 mm-like Jack)", "category": "Cable", "condition": "Working", "notes": "Purpose unknown; jack looks like 3.5 mm", "tags": "unknown cable jack 3.5mm audio pin mystery"},
+        {"item": "Pi Box Adapter Cable", "category": "Cable", "condition": "Working", "notes": "Adapter cable for Raspberry Pi box", "tags": "raspberry pi box adapter cable case dock rpi connector"},
+        {"item": "Power Adapter (3.5 mm-like Pin)", "category": "Power", "condition": "Working", "notes": "Barrel pin looks like a 3.5 mm jack", "tags": "power adapter charger dc pin 3.5mm barrel plug supply"},
+        {"item": "Mini HDMI to HDMI Cable", "category": "Display Cable", "condition": "Working", "notes": "", "tags": "mini hdmi to hdmi cable raspberry pi camera tablet display video"}
       ]
     },
     "8": {
-      "description": "3D Printing, Computer Accessories & Miscellaneous",
-      "items": []
-    },
-    "9": {
-      "description": "Cables, Chargers & Connectivity Accessories",
+      "description": "Daily-Use Cables (USB-C, Micro USB, LAN) & Chargers",
       "items": [
-        {"item": "All LAN Cables", "category": "Networking", "condition": "Working", "notes": "Various lengths", "tags": "ethernet RJ45 network cable LAN internet CAT5 CAT6 wire patch"},
-        {"item": "All USB-C & Micro USB Cables", "category": "USB Cables", "condition": "Working", "notes": "Includes short and long cables", "tags": "USB-C type-C micro USB charging cable data wire phone android"},
-        {"item": "TV & Monitor Power Cables", "category": "Power Cables", "condition": "Working", "notes": "", "tags": "power cord cable TV monitor screen display 3-pin IEC mains"},
-        {"item": "HDMI Cables", "category": "Video Cables", "condition": "Working", "notes": "", "tags": "HDMI cable video display TV monitor 4K HD screen wire"},
-        {"item": "Acer Laptop Charger", "category": "Laptop Charger", "condition": "Working", "notes": "", "tags": "charger laptop Acer adapter power supply notebook brick AC DC"},
-        {"item": "USB-A to USB-A Cable", "category": "USB Cable", "condition": "Working", "notes": "", "tags": "USB type A cable male data transfer wire"},
-        {"item": "Wireless Smartwatch Charger", "category": "Wearable Charger", "condition": "Working", "notes": "", "tags": "watch charger wireless magnetic Qi charging pad smartwatch"},
-        {"item": "3.5 mm Audio Jack Cable", "category": "Audio Cable", "condition": "Working", "notes": "AUX cable", "tags": "AUX audio jack 3.5mm cable headphone speaker stereo wire car"},
-        {"item": "Camera Cable", "category": "Camera Accessory", "condition": "Working", "notes": "", "tags": "camera USB cable data transfer photo video mini micro"}
+        {"item": "Pi Box Cable", "category": "Cable", "condition": "Working", "notes": "Cable for Raspberry Pi box", "tags": "raspberry pi box cable case dock rpi connector adapter"},
+        {"item": "3.5 mm to 3.5 mm Audio (AUX) Cable", "category": "Audio Cable", "condition": "Working", "notes": "", "tags": "3.5mm aux audio jack cable stereo male headphone"},
+        {"item": "Magnetic Watch Charger", "category": "Power", "condition": "Working", "notes": "Magnetic charging cable for smartwatch", "tags": "smartwatch watch charger magnetic charging cable usb dock puck fitness band"},
+        {"item": "All USB-C Cables", "category": "USB Cable", "condition": "Working", "notes": "Every USB-C cable is kept here", "tags": "usb c type-c cables all charging data phone laptop"},
+        {"item": "All Micro USB Cables", "category": "USB Cable", "condition": "Working", "notes": "Every Micro USB cable is kept here", "tags": "micro usb cables all charging data android"},
+        {"item": "All LAN Cables", "category": "Networking", "condition": "Working", "notes": "Every LAN / Ethernet cable is kept here", "tags": "lan ethernet network cables all rj45 internet router wired"},
+        {"item": "Daily-Use Cables", "category": "Cable", "condition": "Working", "notes": "Cables used day to day", "tags": "daily use cables everyday charging cable phone laptop usb"}
       ]
     },
-    "10": {
-      "description": "Cables, Chargers & Overflow Wires",
+    "9": {
+      "description": "Power, Chargers & Home Utility",
       "items": [
-        {"item": "DC Power Adapters ×2", "category": "Power", "condition": "Working", "notes": "Black barrel-jack chargers", "tags": "DC adapter charger power supply barrel jack plug wall transformer 12V 5V"},
-        {"item": "Soldered Perf Board Project", "category": "Electronics", "condition": "Working", "notes": "Green PCB with colored wires soldered on", "tags": "perf board soldered project circuit DIY prototype wired custom"},
-        {"item": "USB-A to USB-B Printer Cable", "category": "USB Cable", "condition": "Working", "notes": "", "tags": "USB A B printer cable data scanner square connector"},
-        {"item": "USB Mini-B Cable", "category": "USB Cable", "condition": "Working", "notes": "", "tags": "USB mini-B cable data charge mini connector old camera controller"}
+        {"item": "Nokia Micro USB Charger", "category": "Power", "condition": "Working", "notes": "", "tags": "nokia micro usb charger adapter phone charging old mobile"},
+        {"item": "3-Pin Power Cable (Cut)", "category": "Power Cable", "condition": "Broken", "notes": "Cable is cut", "tags": "3 pin power cable cut broken mains lead damaged"},
+        {"item": "4-Point Extension Boards ×2", "category": "Electrical", "condition": "Working", "notes": "", "tags": "4 point extension board socket multiplug power strip spike guard"},
+        {"item": "TV Stand", "category": "Home", "condition": "Working", "notes": "", "tags": "tv stand mount television holder base table stand"},
+        {"item": "Original White 3D Printer Filament", "category": "3D Printing", "condition": "Working", "notes": "Original filament that came with the 3D printer", "tags": "3d printer filament white original PLA spool stock 1.75mm"},
+        {"item": "Broken Headphones", "category": "Audio", "condition": "Broken", "notes": "", "tags": "headphones headset broken damaged over-ear audio music not working"},
+        {"item": "Bookmarks", "category": "Stationery", "condition": "Working", "notes": "", "tags": "bookmark book marks reading page marker stationery"},
+        {"item": "Multimeter Probe Wire (Red)", "category": "Electronics", "condition": "Working", "notes": "Single red test lead", "tags": "multimeter probe wire red test lead cable DMM tester banana pin single"}
       ]
     }
   }

@@ -561,9 +561,9 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
             <option value="3">Box 3</option>
             <option value="4">Box 4</option>
             <option value="5">Box 5</option>
+            <option value="6">Box 6</option>
             <option value="8">Box 8</option>
             <option value="9">Box 9</option>
-            <option value="10">Box 10</option>
         </select>
     </div>
     <div class="form-group">
@@ -595,7 +595,7 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
 <div class="info-panel">
     <button class="info-close" onclick="closeInfo()">&times;</button>
     <h2>Home Inventory</h2>
-    <p>A searchable inventory app for tracking items across 5 physical storage boxes. Built with plain HTML, CSS & JavaScript — no frameworks, no backend.</p>
+    <p>A searchable inventory app for tracking items across 8 physical storage boxes. Built with plain HTML, CSS & JavaScript — no frameworks, no backend.</p>
 
     <h3>All Pages</h3>
     <div class="page-grid">
@@ -627,17 +627,17 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
             <strong>box5.html</strong>
             <p>Box 5 — Vehicle, RPi, Stationery & Misc</p>
         </a>
+        <a href="box6.html" class="page-card">
+            <strong>box6.html</strong>
+            <p>Box 6 — Computer Accessories, Cables &amp; Chargers</p>
+        </a>
         <a href="box8.html" class="page-card">
             <strong>box8.html</strong>
-            <p>Box 8 — 3D Printing, Computer Accessories & Misc</p>
+            <p>Box 8 — Daily-Use Cables (USB-C, Micro USB, LAN) &amp; Chargers</p>
         </a>
         <a href="box9.html" class="page-card">
             <strong>box9.html</strong>
-            <p>Box 9 — Cables, Chargers & Connectivity</p>
-        </a>
-        <a href="box10.html" class="page-card">
-            <strong>box10.html</strong>
-            <p>Box 10 — Cables, Chargers & Overflow Wires</p>
+            <p>Box 9 — Power, Chargers & Home Utility</p>
         </a>
         <div class="page-card">
             <strong>data.json</strong>
@@ -678,7 +678,7 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
     <h3>Data & Storage</h3>
     <div class="info-section">
         <p><strong>Source of truth:</strong> <code>data.json</code> — the central inventory file. On first visit, the app loads from this file.<br>
-        <strong>Local edits:</strong> Saved in browser localStorage. To reset to data.json, clear localStorage.<br>
+        <strong>Local edits:</strong> Saved in browser localStorage. Whenever data.json changes, the app reloads from it automatically (local edits are replaced).<br>
         <strong>Permanent changes:</strong> Edit <code>data.json</code> directly, commit & push to GitHub.</p>
     </div>
 
@@ -705,6 +705,7 @@ mark{background:#e9456040;color:#ff8a9e;padding:1px 3px;border-radius:3px}
 
 <script>
 const STORAGE_KEY = 'home_inventory_data';
+const SOURCE_KEY = 'home_inventory_source';
 
 let BOX_DESCS = {};
 
@@ -739,26 +740,30 @@ let activeBox = 0;
 
 async function load() {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-        inventory = JSON.parse(saved);
-        if (!Object.keys(BOX_DESCS).length) {
-            try {
-                const resp = await fetch('data.json');
-                const data = await resp.json();
-                for (const [k, v] of Object.entries(data.boxes)) BOX_DESCS[Number(k)] = v.description;
-            } catch(e) {
-                for (const it of inventory) if (it.box && it.boxDesc) BOX_DESCS[it.box] = it.boxDesc;
-            }
-        }
-    } else {
-        try {
-            const resp = await fetch('data.json');
-            const data = await resp.json();
+    let text = null, data = null;
+    try {
+        // no-store: always get the latest data.json, never a browser-cached copy
+        const resp = await fetch('data.json', {cache: 'no-store'});
+        if (resp.ok) { text = await resp.text(); data = JSON.parse(text); }
+    } catch(e) { text = null; data = null; }
+
+    if (data) {
+        if (saved && localStorage.getItem(SOURCE_KEY) === text) {
+            // data.json unchanged since last load: keep local edits
+            inventory = JSON.parse(saved);
+            for (const [k, v] of Object.entries(data.boxes)) BOX_DESCS[Number(k)] = v.description;
+        } else {
+            // first visit or data.json changed: reload from it
             inventory = jsonToInventory(data);
+            localStorage.setItem(SOURCE_KEY, text);
             save();
-        } catch(e) {
-            inventory = [];
         }
+    } else if (saved) {
+        // offline / data.json unreachable: fall back to saved copy
+        inventory = JSON.parse(saved);
+        for (const it of inventory) if (it.box && it.boxDesc) BOX_DESCS[it.box] = it.boxDesc;
+    } else {
+        inventory = [];
     }
 }
 
