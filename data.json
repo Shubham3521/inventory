@@ -83,7 +83,8 @@
         {"item": "Lighter", "category": "Tools", "condition": "Working", "notes": "", "tags": "lighter fire flame gas cigarette pocket butane"},
         {"item": "AAA Batteries (Unknown Brand) ×3", "category": "Batteries", "condition": "Working", "notes": "Brand unknown", "tags": "aaa battery batteries cell 1.5v remote unknown brand"},
         {"item": "Tweezers", "category": "Tools", "condition": "Working", "notes": "", "tags": "tweezers forceps precision pick smd electronics grip"},
-        {"item": "Green Night Lamp", "category": "Lighting", "condition": "Working", "notes": "Green glow night light", "tags": "night lamp green led light glow bedside small plug"}
+        {"item": "Green Night Lamp", "category": "Lighting", "condition": "Working", "notes": "Green glow night light", "tags": "night lamp green led light glow bedside small plug"},
+        {"item": "Wire Stripper", "category": "Tools", "condition": "Working", "notes": "", "tags": "wire stripper stripping tool cable insulation strip cutter crimp electrical"}
       ]
     },
     "3": {
@@ -207,7 +208,8 @@
         {"item": "Titan Wrist Watch", "category": "Wearable", "condition": "Working", "notes": "", "tags": "titan watch wrist analog time clock band strap wearable"},
         {"item": "12-in-1 3D Printed Fidget Toy", "category": "3D Printing", "condition": "Working", "notes": "12 fidget designs in one", "tags": "fidget toy 3d print 12 in 1 stress relief spinner clicker desk toy"},
         {"item": "Phone Holder", "category": "Mobile Accessory", "condition": "Working", "notes": "", "tags": "phone holder mobile stand mount grip desk cradle"},
-        {"item": "Transistor Radio Battery (Not Working)", "category": "Electronics", "condition": "Not Working", "notes": "Dead battery for transistor radio", "tags": "transistor radio battery dead not working cell old replace"}
+        {"item": "Transistor Radio Battery (Not Working)", "category": "Electronics", "condition": "Not Working", "notes": "Dead battery for transistor radio", "tags": "transistor radio battery dead not working cell old replace"},
+        {"item": "Vacuum Rubber (Unknown Origin)", "category": "Hardware", "condition": "Spare", "notes": "Origin unknown", "tags": "vacuum rubber seal gasket suction cup part spare unknown"}
       ]
     },
     "6": {
@@ -265,6 +267,26 @@
         {"item": "Bookmarks", "category": "Stationery", "condition": "Working", "notes": "", "tags": "bookmark book marks reading page marker stationery"},
         {"item": "Multimeter Probe Wire (Red)", "category": "Electronics", "condition": "Working", "notes": "Single red test lead", "tags": "multimeter probe wire red test lead cable DMM tester banana pin single"}
       ]
+    },
+    "10": {
+      "description": "New box",
+      "items": [
+        {"item": "2-Point Multiplug", "category": "Electrical", "condition": "Working", "notes": "", "tags": "2 point extension board socket power strip multi plug 2-way"},
+        {"item": "Colin Refill", "category": "Cleaning", "condition": "Working", "notes": "Glass cleaner refill pack", "tags": "colin glass cleaner refill liquid spray cleaning window mirror"},
+        {"item": "Empty Small Organizer Boxes ×5", "category": "Storage", "condition": "Working", "notes": "Empty, for organising small parts", "tags": "empty small box boxes organizer container storage sorting parts"},
+        {"item": "Room Switch Socket Part", "category": "Electrical", "condition": "Spare", "notes": "", "tags": "room wall switch socket board part spare electrical modular"},
+        {"item": "Wet Wipes", "category": "Cleaning", "condition": "Working", "notes": "", "tags": "wet wipes tissue wipe cleaning hygiene napkin"},
+        {"item": "Empty Phone Book / Small Diary", "category": "Stationery", "condition": "Working", "notes": "Empty, unused", "tags": "phone book telephone directory diary notebook small empty contacts writing pad"},
+        {"item": "3M Foam Spray", "category": "Cleaning", "condition": "Working", "notes": "", "tags": "3m foam spray cleaner can aerosol"}
+      ]
+    },
+    "11": {
+      "description": "New box",
+      "items": []
+    },
+    "12": {
+      "description": "New box",
+      "items": []
     }
   }
 }
