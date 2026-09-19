@@ -1,0 +1,16 @@
+# Build output
+build/
+app/build/
+.gradle/
+*.apk
+*.aab
+*.idsig
+
+# Machine-specific
+local.properties
+.idea/
+*.iml
+
+# Never commit signing keys
+*.keystore
+*.jks

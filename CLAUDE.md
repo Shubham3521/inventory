@@ -58,4 +58,6 @@ Generated from `twa-manifest.json` (host, colors, shortcuts `#add=1` / `#scan=1`
 ## Hosting
 
 - **Static repo:** github.com/Shubham3521/inventory — live at shubham3521.github.io/inventory/index.html (labels: `/print.html`)
-- **Server app:** inventory.refurbindia.com
+- **Server app:** https://inventory.refurbindia.com runs on a self-hosted Ubuntu VPS, with nginx in front of the Node app (which listens on 127.0.0.1:3001 by default).
+- **Android APK:** served from `https://inventory.refurbindia.com/download/inventory.apk`. `app.html` is the download page.
+- **Changing live data:** the live server's data lives only in its SQLite DB, so it doesn't pick up changes to `data.json`. Apply inventory edits to both places: edit the static files, and call the live API (`POST`/`PATCH /api/items`, `/api/boxes` with header `X-Requested-With: inventory`).

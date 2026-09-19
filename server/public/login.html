@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<title>Home Inventory — Sign in</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:#1a1a2e;
+    color:#e0e0e0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+.card{
+    background:#16213e;
+    border:1px solid #2a2a4a;
+    border-radius:14px;
+    padding:28px;
+    width:100%;
+    max-width:360px;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+h1{font-size:22px;color:#fff;margin-bottom:6px}
+p{font-size:14px;color:#8888aa;margin-bottom:20px}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px;color:#8888aa}
+input{
+    width:100%;
+    padding:12px;
+    border:2px solid #2a2a4a;
+    border-radius:8px;
+    font-size:16px;
+    outline:none;
+    background:#1a1a2e;
+    color:#eee;
+}
+input:focus{border-color:#e94560}
+button{
+    width:100%;
+    margin-top:16px;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#e94560;
+    color:#fff;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+button:disabled{opacity:.6;cursor:default}
+.error{color:#ff8a9e;font-size:13px;margin-top:12px;min-height:18px}
+</style>
+</head>
+<body>
+<form class="card" id="login">
+    <h1>Home Inventory</h1>
+    <p>Sign in to view and edit your boxes.</p>
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password" autofocus required>
+    <button type="submit" id="submit">Sign in</button>
+    <div class="error" id="error"></div>
+</form>
+<script>
+document.getElementById('login').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit');
+    const err = document.getElementById('error');
+    btn.disabled = true;
+    err.textContent = '';
+    try {
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'X-Requested-With': 'inventory'},
+            body: JSON.stringify({password: document.getElementById('password').value})
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Sign in failed');
+        // Reload the same URL (keeps #box=N from a scanned QR code)
+        if (location.pathname.endsWith('login.html')) location.href = '/' + location.hash;
+        else location.reload();
+    } catch (ex) {
+        err.textContent = ex.message;
+        btn.disabled = false;
+    }
+});
+</script>
+</body>
+</html>

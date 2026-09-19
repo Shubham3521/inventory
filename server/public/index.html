@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#fafafa">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Inventory">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/apple-180.png">
+<link rel="preload" href="/vendor/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<title>Home Inventory</title>
+<script>
+// Apply the saved (or device) theme before the page paints, so there is no flash.
+(function () {
+    var theme = 'light';
+    try { theme = localStorage.getItem('inv_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}
+    document.documentElement.dataset.theme = theme;
+})();
+</script>
+
+<style>
+@font-face{
+    font-family:'Inter';
+    src:url('/vendor/inter-latin.woff2') format('woff2');
+    font-weight:100 900;
+    font-style:normal;
+    font-display:swap;
+}
+
+:root{
+    --bg:#fafafa;
+    --surface:#ffffff;
+    --surface-2:#f4f4f5;
+    --border:#e4e4e7;
+    --text:#09090b;
+    --muted:#71717a;
+    --faint:#a1a1aa;
+    --accent:#6366f1;
+    --accent-2:#a855f7;
+    --accent-fg:#ffffff;
+    --accent-soft:#eef2ff;
+    --ok:#15803d;
+    --ok-soft:#dcfce7;
+    --bad:#dc2626;
+    --bad-soft:#fee2e2;
+    --warn:#b45309;
+    --warn-soft:#fef3c7;
+    --spare:#a16207;
+    --spare-soft:#fef9c3;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.04), 0 1px 8px rgba(0,0,0,.04);
+    --shadow-lg:0 24px 64px rgba(0,0,0,.18);
+    --radius:14px;
+    --top:61px;
+    color-scheme:light;
+}
+
+[data-theme="dark"]{
+    --bg:#09090b;
+    --surface:#18181b;
+    --surface-2:#202024;
+    --border:#2e2e33;
+    --text:#fafafa;
+    --muted:#a1a1aa;
+    --faint:#71717a;
+    --accent:#818cf8;
+    --accent-2:#c084fc;
+    --accent-fg:#0b0b14;
+    --accent-soft:rgba(129,140,248,.14);
+    --ok:#4ade80;
+    --ok-soft:rgba(74,222,128,.12);
+    --bad:#f87171;
+    --bad-soft:rgba(248,113,113,.13);
+    --warn:#fbbf24;
+    --warn-soft:rgba(251,191,36,.12);
+    --spare:#facc15;
+    --spare-soft:rgba(250,204,21,.12);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+    --shadow-lg:0 24px 64px rgba(0,0,0,.6);
+    color-scheme:dark;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+
+body{
+    font-family:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    font-size:14px;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .25s,color .25s;
+}
+body.locked{overflow:hidden}
+
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+
+.i{width:18px;height:18px;flex-shrink:0;display:inline-block;vertical-align:middle}
+
+/* ---------- top bar ---------- */
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--border);
+}
+.topbar-inner{
+    max-width:1100px;
+    margin:auto;
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:650;
+    font-size:16px;
+    letter-spacing:-.01em;
+    margin-right:auto;
+}
+.brand-mark{
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    color:#fff;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow:0 6px 16px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.top-actions{display:flex;align-items:center;gap:2px}
+
+/* ---------- buttons ---------- */
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    height:36px;
+    padding:0 14px;
+    border-radius:10px;
+    border:1px solid transparent;
+    background:transparent;
+    font-weight:550;
+    font-size:14px;
+    cursor:pointer;
+    white-space:nowrap;
+    user-select:none;
+    transition:background-color .15s, color .15s, border-color .15s, box-shadow .15s, transform .1s, filter .15s;
+}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.btn:focus-visible,.chip:focus-visible,.input:focus-visible,.select:focus-visible,.nav-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn-primary{
+    background:var(--accent);
+    color:var(--accent-fg);
+    box-shadow:0 1px 2px rgba(0,0,0,.1), 0 6px 16px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.btn-primary:hover{filter:brightness(1.07)}
+.btn-outline{border-color:var(--border);background:var(--surface)}
+.btn-outline:hover{background:var(--surface-2)}
+.btn-soft{background:var(--accent-soft);color:var(--accent)}
+.btn-soft:hover{filter:brightness(.97)}
+.btn-danger{background:var(--bad);color:#fff}
+.btn-sm{height:30px;padding:0 10px;font-size:13px;border-radius:8px}
+.btn-sm .i{width:15px;height:15px}
+.icon-btn{width:36px;padding:0;color:var(--muted);position:relative}
+.icon-btn:hover{background:var(--surface-2);color:var(--text)}
+.icon-btn.danger:hover{background:var(--bad-soft);color:var(--bad)}
+
+.count-badge{
+    position:absolute;
+    top:1px;
+    right:-1px;
+    min-width:18px;
+    height:18px;
+    padding:0 4px;
+    border-radius:9px;
+    background:var(--bad);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid var(--bg);
+    animation:pop .3s cubic-bezier(.2,.9,.3,1.4);
+}
+
+/* ---------- layout ---------- */
+.container{max-width:1100px;margin:auto;padding:28px 20px 64px}
+
+.hero h1{font-size:30px;font-weight:700;letter-spacing:-.025em;line-height:1.15}
+.hero h1 span{
+    background:linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+.hero p{color:var(--muted);margin-top:6px;font-size:15px}
+
+/* ---------- search ---------- */
+.search{position:relative;margin:18px 0 20px}
+.search > .i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--faint);pointer-events:none}
+.search input{
+    width:100%;
+    height:50px;
+    padding:0 96px 0 44px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+    font:inherit;
+    font-size:15px;
+    box-shadow:var(--shadow-sm);
+    transition:border-color .15s, box-shadow .2s;
+}
+.search input::placeholder{color:var(--faint)}
+.search input:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.search-side{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px}
+.kbd{
+    font-size:12px;
+    color:var(--faint);
+    border:1px solid var(--border);
+    border-bottom-width:2px;
+    border-radius:6px;
+    padding:1px 7px;
+    background:var(--surface-2);
+    font-family:inherit;
+}
+.search-clear{width:30px;height:30px}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4, 1fr);gap:12px;margin-bottom:20px}
+.stat{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-sm);
+    min-width:0;
+}
+.stat-icon{
+    width:38px;
+    height:38px;
+    border-radius:11px;
+    display:grid;
+    place-items:center;
+    background:var(--accent-soft);
+    color:var(--accent);
+    flex-shrink:0;
+}
+.stat.bad .stat-icon{background:var(--bad-soft);color:var(--bad)}
+.stat-label{font-size:12px;color:var(--muted);font-weight:500}
+.num{font-size:22px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2}
+
+/* ---------- filters ---------- */
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-bottom:14px}
+.chips{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    flex:1 1 100%;
+    min-width:0;
+    padding:2px;
+    position:relative;
+    -webkit-mask-image:linear-gradient(to right, #000 90%, transparent);
+    mask-image:linear-gradient(to right, #000 90%, transparent);
+}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    height:34px;
+    padding:0 13px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--muted);
+    font-weight:550;
+    cursor:pointer;
+    white-space:nowrap;
+    flex:0 0 auto;
+    transition:background-color .18s, color .18s, border-color .18s, transform .1s;
+}
+.chip:hover{color:var(--text);border-color:color-mix(in srgb, var(--text) 22%, var(--border))}
+.chip:active{transform:scale(.96)}
+.chip.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.chip-count{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
+.chip.active .chip-count{color:color-mix(in srgb, var(--bg) 65%, transparent)}
+
+.filter-right{display:flex;gap:8px;flex-shrink:0;margin-left:auto}
+.filter-right > *{min-width:0}
+.select{
+    height:34px;
+    padding:0 32px 0 12px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center / 14px;
+    appearance:none;
+    -webkit-appearance:none;
+    color:var(--text);
+    font:inherit;
+    font-size:13px;
+    font-weight:500;
+    cursor:pointer;
+    max-width:200px;
+}
+
+.result-count{font-size:13px;color:var(--muted);margin:0 0 10px 2px;min-height:1px}
+
+/* ---------- list ---------- */
+.list{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    box-shadow:var(--shadow-sm);
+    overflow:clip;
+}
+
+.box-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 16px;
+    background:color-mix(in srgb, var(--surface-2) 92%, transparent);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-top:1px solid var(--border);
+    position:sticky;
+    top:var(--top);
+    z-index:5;
+}
+.list > :first-child{border-top:none}
+.box-title{display:flex;align-items:center;gap:12px;min-width:0}
+.box-num{
+    width:36px;
+    height:36px;
+    border-radius:11px;
+    display:grid;
+    place-items:center;
+    font-weight:700;
+    font-size:15px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    flex-shrink:0;
+    font-variant-numeric:tabular-nums;
+}
+.box-head h2{font-size:15px;font-weight:650;letter-spacing:-.01em}
+.desc{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.faint{color:var(--faint)}
+.box-meta{display:flex;align-items:center;gap:8px;flex-shrink:0}
+
+.pill{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    height:24px;
+    padding:0 9px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:550;
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--muted);
+    white-space:nowrap;
+}
+.pill .i{width:13px;height:13px}
+.pill.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.pill.warn:hover{filter:brightness(.96)}
+
+.item{
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) auto auto;
+    align-items:center;
+    gap:16px;
+    padding:12px 16px;
+    border-top:1px solid var(--border);
+    transition:background-color .15s;
+}
+.item:hover{background:color-mix(in srgb, var(--surface-2) 55%, transparent)}
+.item-name{font-weight:550;font-size:14.5px;overflow-wrap:anywhere}
+.qty{
+    display:inline-block;
+    margin-left:8px;
+    font-size:12px;
+    font-weight:650;
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:1px 8px;
+    border-radius:999px;
+    vertical-align:1px;
+    font-variant-numeric:tabular-nums;
+}
+.item-sub{display:flex;flex-wrap:wrap;align-items:center;gap:3px 6px;margin-top:3px;font-size:13px;color:var(--muted)}
+.notes{font-style:italic}
+.dot-sep{color:var(--faint)}
+.box-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-weight:600;
+    font-size:12px;
+    color:var(--text);
+    padding:1px 8px 1px 6px;
+    border-radius:6px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+}
+.box-chip:hover{border-color:var(--accent);color:var(--accent)}
+.box-chip .i{width:13px;height:13px}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    height:24px;
+    padding:0 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:550;
+    white-space:nowrap;
+}
+.badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.working{background:var(--ok-soft);color:var(--ok)}
+.broken{background:var(--bad-soft);color:var(--bad)}
+.notworking{background:var(--warn-soft);color:var(--warn)}
+.spare{background:var(--spare-soft);color:var(--spare)}
+
+.item-actions{display:flex;align-items:center;gap:2px;opacity:.5;transition:opacity .15s}
+.item:hover .item-actions,.item:focus-within .item-actions{opacity:1}
+.stepper{
+    display:inline-flex;
+    align-items:center;
+    height:32px;
+    margin-right:6px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--surface);
+}
+.step{width:30px;height:30px;padding:0;border-radius:9px;color:var(--muted)}
+.step:hover{background:var(--surface-2);color:var(--text)}
+.step .i{width:15px;height:15px}
+.step-val{min-width:22px;text-align:center;font-size:13px;font-weight:650;font-variant-numeric:tabular-nums}
+.item-actions .icon-btn{width:34px;height:34px}
+
+mark{background:color-mix(in srgb, var(--accent) 22%, transparent);color:inherit;border-radius:4px;padding:0 2px}
+
+.sep{
+    padding:9px 16px;
+    font-size:11.5px;
+    font-weight:650;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    background:var(--surface-2);
+    border-top:1px solid var(--border);
+}
+.empty-box{display:flex;align-items:center;gap:8px;padding:16px;color:var(--faint);border-top:1px solid var(--border)}
+.empty-state{padding:56px 20px;text-align:center;color:var(--muted)}
+.empty-state .big{
+    width:56px;
+    height:56px;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+    margin:0 auto 14px;
+    background:var(--surface-2);
+    color:var(--faint);
+}
+.empty-state .big .i{width:26px;height:26px}
+.empty-state h3{font-size:16px;color:var(--text);font-weight:650;margin-bottom:4px}
+.empty-state .btn{margin-top:14px}
+
+.skeleton{height:62px;border-top:1px solid var(--border);position:relative}
+.skeleton:first-child{border-top:none}
+.skeleton::before,.skeleton::after{
+    content:'';
+    position:absolute;
+    left:16px;
+    border-radius:6px;
+    background:linear-gradient(90deg, var(--surface-2) 25%, color-mix(in srgb, var(--surface-2) 40%, var(--surface)) 50%, var(--surface-2) 75%);
+    background-size:200% 100%;
+    animation:shimmer 1.3s infinite linear;
+}
+.skeleton::before{top:14px;height:14px;width:38%}
+.skeleton::after{top:36px;height:10px;width:22%}
+@keyframes shimmer{to{background-position:-200% 0}}
+
+/* ---------- dialogs ---------- */
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    background:rgba(9,9,11,.45);
+    backdrop-filter:blur(5px);
+    -webkit-backdrop-filter:blur(5px);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .2s, visibility 0s .25s;
+}
+.modal-overlay.open{opacity:1;visibility:visible;transition:opacity .2s}
+.modal{
+    width:100%;
+    max-width:480px;
+    max-height:calc(100vh - 32px);
+    overflow-y:auto;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    box-shadow:var(--shadow-lg);
+    padding:22px;
+    transform:translateY(14px) scale(.97);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1.15);
+}
+.modal-overlay.open .modal{transform:none}
+.modal.wide{max-width:600px}
+.sheet-handle{display:none}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.modal-head h2{font-size:18px;font-weight:650;letter-spacing:-.01em}
+.modal-sub{color:var(--muted);font-size:13px;margin:-10px 0 16px}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:550;margin-bottom:6px}
+.input{
+    width:100%;
+    height:42px;
+    padding:0 12px;
+    border-radius:11px;
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--text);
+    font:inherit;
+    font-size:15px;
+    transition:border-color .15s, box-shadow .2s;
+}
+.input::placeholder{color:var(--faint)}
+.input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent)}
+select.input{
+    appearance:none;
+    -webkit-appearance:none;
+    padding-right:34px;
+    background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center / 15px;
+}
+.row{display:grid;grid-template-columns:1fr 92px;gap:10px}
+.row.half{grid-template-columns:1fr 1fr}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+
+.dupes{
+    border:1px solid color-mix(in srgb, var(--warn) 30%, transparent);
+    background:var(--warn-soft);
+    border-radius:12px;
+    padding:10px 12px;
+    margin:-4px 0 14px;
+    animation:drop .22s ease-out;
+}
+.dupes:empty{display:none}
+.dupes-title{display:flex;align-items:center;gap:6px;font-weight:650;color:var(--warn);font-size:13px;margin-bottom:6px}
+.dupes-title .i{width:15px;height:15px}
+.dupe{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:3px 0;font-size:13px}
+
+.move-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.move-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-align:left;
+    padding:10px 12px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:var(--bg);
+    cursor:pointer;
+    transition:border-color .15s, background-color .15s, transform .1s;
+    min-width:0;
+}
+.move-box:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.move-box:active:not(:disabled){transform:scale(.98)}
+.move-box:disabled{opacity:.45;cursor:default}
+.move-box strong{display:block;font-size:14px}
+.move-box span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.move-box > div{min-width:0}
+
+.box-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+.box-row .muted{white-space:nowrap}
+.muted{color:var(--muted);font-size:13px}
+.section-title{font-size:14px;font-weight:650;margin:20px 0 8px}
+
+.hist{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.hist-time{color:var(--faint);font-size:12px;min-width:112px;padding-top:2px;font-variant-numeric:tabular-nums}
+.hist.undone .hist-text{text-decoration:line-through;color:var(--faint)}
+
+.menu-list{display:flex;flex-direction:column;gap:4px}
+.menu-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    background:none;
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+    text-align:left;
+}
+.menu-item:hover{background:var(--surface-2)}
+.menu-item .i{color:var(--muted)}
+
+.help p{color:var(--muted);line-height:1.65;margin-bottom:10px}
+.help h3{font-size:13px;font-weight:650;margin:16px 0 6px;color:var(--text)}
+.kbd-grid{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:center;color:var(--muted)}
+
+/* ---------- toast ---------- */
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:24px;
+    z-index:200;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:300px;
+    max-width:calc(100vw - 32px);
+    padding:8px 8px 8px 14px;
+    border-radius:14px;
+    background:var(--text);
+    color:var(--bg);
+    box-shadow:0 16px 40px rgba(0,0,0,.28);
+    font-size:14px;
+    font-weight:500;
+    transform:translate(-50%, 24px) scale(.95);
+    opacity:0;
+    visibility:hidden;
+    transition:transform .35s cubic-bezier(.2,.9,.3,1.25), opacity .2s, visibility 0s .35s;
+}
+.toast.show{
+    transform:translate(-50%, 0) scale(1);
+    opacity:1;
+    visibility:visible;
+    transition:transform .35s cubic-bezier(.2,.9,.3,1.25), opacity .2s;
+}
+.toast .msg{flex:1;min-width:0}
+.toast-icon{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:var(--ok);
+    color:var(--surface);
+    flex-shrink:0;
+}
+.toast-icon .i{width:14px;height:14px;stroke-width:3}
+.toast .btn{height:32px;background:color-mix(in srgb, var(--bg) 16%, transparent);color:var(--bg)}
+.toast .btn:hover{background:color-mix(in srgb, var(--bg) 26%, transparent)}
+
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+@keyframes drop{from{opacity:0;transform:translateY(-6px)}}
+
+/* ---------- bottom navigation (phones) ---------- */
+.bottom-nav{display:none}
+
+@media (max-width:700px){
+    :root{--top:57px}
+    .topbar-inner{padding:10px 16px}
+    .hide-mobile{display:none!important}
+    .brand{font-size:15px}
+    .brand-mark{width:32px;height:32px}
+
+    .container{padding:18px 16px calc(110px + env(safe-area-inset-bottom))}
+    .hero h1{font-size:23px}
+    .hero p{font-size:14px}
+    .search{margin:14px 0 14px}
+    .search input{height:48px;font-size:16px;padding-right:48px}
+    .kbd{display:none}
+
+    .stats{gap:8px;margin-bottom:14px}
+    .stat{flex-direction:column;align-items:flex-start;gap:6px;padding:10px}
+    .stat-icon{width:28px;height:28px;border-radius:8px}
+    .stat-icon .i{width:15px;height:15px}
+    .stat-label{font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+    .num{font-size:18px}
+
+    .filters{flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:10px}
+    .chips{flex:0 0 auto;width:100%}
+    .chip{height:36px}
+    .filter-right{display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);margin-left:0}
+    .filter-right .select{width:100%}
+    .select{height:40px;font-size:14px;max-width:none}
+
+    .list{border-radius:16px}
+    .box-head{padding:10px 12px;gap:8px}
+    .box-meta .pill:not(.warn){display:none}
+    .desc{max-width:44vw}
+
+    .item{grid-template-columns:minmax(0, 1fr) auto;gap:8px 10px;padding:12px}
+    .item-actions{grid-column:1 / -1;opacity:1;gap:4px}
+    .stepper{height:40px;margin-right:auto}
+    .step{width:40px;height:38px}
+    .item-actions .icon-btn{width:42px;height:40px}
+
+    .modal-overlay{align-items:flex-end;padding:0}
+    .modal,.modal.wide{
+        max-width:100%;
+        max-height:92vh;
+        border-radius:22px 22px 0 0;
+        border-bottom:none;
+        padding:10px 18px calc(20px + env(safe-area-inset-bottom));
+        transform:translateY(100%);
+        transition:transform .35s cubic-bezier(.2,.9,.3,1);
+    }
+    .sheet-handle{display:block;width:38px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 12px}
+    .input{height:48px;font-size:16px}
+    .modal-actions .btn{flex:1;height:48px;font-size:15px}
+    .move-grid{grid-template-columns:1fr}
+    .box-row{grid-template-columns:auto 1fr auto}
+    .box-row .muted{display:none}
+    .hist{flex-direction:column;gap:2px}
+
+    .toast{bottom:calc(88px + env(safe-area-inset-bottom));min-width:0;width:calc(100vw - 32px)}
+
+    .bottom-nav{
+        display:grid;
+        grid-template-columns:repeat(5, 1fr);
+        align-items:end;
+        position:fixed;
+        left:0;
+        right:0;
+        bottom:0;
+        z-index:60;
+        padding:6px 6px calc(6px + env(safe-area-inset-bottom));
+        background:color-mix(in srgb, var(--surface) 86%, transparent);
+        backdrop-filter:saturate(180%) blur(16px);
+        -webkit-backdrop-filter:saturate(180%) blur(16px);
+        border-top:1px solid var(--border);
+    }
+    .nav-btn{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:3px;
+        padding:6px 0 4px;
+        font-size:11px;
+        font-weight:550;
+        color:var(--muted);
+        background:none;
+        border:none;
+        cursor:pointer;
+        position:relative;
+        border-radius:12px;
+    }
+    .nav-btn .i{width:23px;height:23px}
+    .nav-btn.active{color:var(--accent)}
+    .nav-btn .count-badge{top:0;right:calc(50% - 22px)}
+    .fab{
+        justify-self:center;
+        width:54px;
+        height:54px;
+        margin-bottom:6px;
+        border-radius:18px;
+        border:none;
+        display:grid;
+        place-items:center;
+        color:#fff;
+        background:linear-gradient(135deg, var(--accent), var(--accent-2));
+        box-shadow:0 10px 24px color-mix(in srgb, var(--accent) 45%, transparent);
+        cursor:pointer;
+        transition:transform .15s;
+    }
+    .fab:active{transform:scale(.92)}
+    .fab .i{width:26px;height:26px;stroke-width:2.5}
+}
+
+/* ---------- app download banner ---------- */
+.app-banner{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:16px;
+    padding:12px;
+    border-radius:16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-sm);
+    animation:drop .3s ease-out;
+}
+.app-banner img{border-radius:11px;flex-shrink:0}
+.app-banner .txt{flex:1;min-width:0}
+.app-banner b{display:block;font-size:14px}
+.app-banner .txt span{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- QR scanner ---------- */
+.scanner{position:fixed;inset:0;z-index:150;background:#000;display:flex;align-items:center;justify-content:center;animation:fade .2s}
+.scanner video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scan-frame{
+    position:relative;
+    width:min(70vw, 280px);
+    aspect-ratio:1;
+    border-radius:26px;
+    box-shadow:0 0 0 100vmax rgba(0,0,0,.55);
+    outline:3px solid rgba(255,255,255,.92);
+    outline-offset:-3px;
+    overflow:hidden;
+}
+.scan-frame::after{
+    content:'';
+    position:absolute;
+    left:8%;
+    right:8%;
+    height:3px;
+    border-radius:3px;
+    background:linear-gradient(90deg, transparent, #c084fc, transparent);
+    box-shadow:0 0 18px #c084fc;
+    animation:scanline 2s ease-in-out infinite;
+}
+@keyframes scanline{0%,100%{top:10%}50%{top:88%}}
+@keyframes fade{from{opacity:0}}
+.scan-close{position:absolute;top:calc(16px + env(safe-area-inset-top));right:16px;width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff}
+.scan-close:hover{background:rgba(0,0,0,.6);color:#fff}
+.scan-hint{position:absolute;left:16px;right:16px;bottom:calc(48px + env(safe-area-inset-bottom));text-align:center;color:#fff;font-weight:550;font-size:15px;text-shadow:0 1px 8px rgba(0,0,0,.7)}
+
+.offline-bar{
+    position:fixed;
+    left:50%;
+    top:calc(var(--top) + 10px);
+    transform:translateX(-50%);
+    z-index:70;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 12px;
+    border-radius:999px;
+    background:var(--warn-soft);
+    color:var(--warn);
+    border:1px solid color-mix(in srgb, var(--warn) 30%, transparent);
+    font-size:13px;
+    font-weight:600;
+    white-space:nowrap;
+    box-shadow:var(--shadow-sm);
+    animation:drop .25s ease-out;
+}
+.offline-bar .i{width:15px;height:15px}
+.menu-item .count-badge{position:static;margin-left:auto;border:none}
+
+@media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="#" onclick="setBox(0); return false;">
+            <span class="brand-mark"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#package"/></svg></span>
+            <span>Home Inventory</span>
+        </a>
+        <nav class="top-actions">
+            <a class="btn icon-btn hide-mobile" id="labels-btn" href="/print.html" title="Print labels" aria-label="Print labels">
+                <svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#printer"/></svg><span class="count-badge labels-count" hidden></span>
+            </a>
+            <button class="btn icon-btn hide-mobile" onclick="openHistory()" title="History" aria-label="History"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#history"/></svg></button>
+            <button class="btn icon-btn hide-mobile" onclick="openBoxes()" title="Manage boxes" aria-label="Manage boxes"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#boxes"/></svg></button>
+            <button class="btn icon-btn hide-mobile" onclick="openOverlay('export-modal')" title="Export" aria-label="Export"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#download"/></svg></button>
+            <button class="btn icon-btn hide-mobile" onclick="openOverlay('help-modal')" title="Help" aria-label="Help"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#circle-help"/></svg></button>
+            <a class="btn icon-btn hide-mobile get-app" href="/app.html" title="Get the Android app" aria-label="Get the Android app"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#smartphone"/></svg></a>
+            <button class="btn icon-btn hide-mobile" id="scan-btn-top" onclick="openScanner()" title="Scan a box label" aria-label="Scan a box label" hidden><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#scan-line"/></svg></button>
+            <button class="btn icon-btn" onclick="toggleTheme()" title="Light / dark" aria-label="Toggle light or dark theme"><svg class="i" aria-hidden="true"><use class="theme-use" href="/vendor/icons.svg#moon"/></svg></button>
+            <button class="btn icon-btn" id="signout-btn" onclick="logout()" title="Sign out" aria-label="Sign out" style="display:none"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#log-out"/></svg></button>
+            <button class="btn btn-primary hide-mobile add-btn" onclick="openModal()" style="margin-left:8px"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#plus"/></svg>Add item</button>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <section class="hero">
+        <h1>Find anything in <span>your boxes</span></h1>
+        <p id="hero-sub">Loading your inventory…</p>
+        <div class="app-banner get-app" id="app-banner" hidden>
+            <img src="/icons/icon-192.png" alt="" width="42" height="42">
+            <div class="txt"><b>Get the Android app</b><span>Scan labels with your camera · works offline</span></div>
+            <a class="btn btn-primary btn-sm" href="/download/inventory.apk" id="banner-download"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#download"/></svg>Download</a>
+            <button class="btn icon-btn" onclick="dismissAppBanner()" aria-label="Dismiss"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#x"/></svg></button>
+        </div>
+    </section>
+
+    <div class="search">
+        <svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#search"/></svg>
+        <input type="text" id="search" placeholder="Search items, notes, categories…" autocomplete="off" enterkeyhint="search" aria-label="Search">
+        <div class="search-side">
+            <button class="btn icon-btn search-clear" id="search-clear" onclick="clearSearch()" aria-label="Clear search" hidden><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#x"/></svg></button>
+            <kbd class="kbd" id="search-kbd">/</kbd>
+        </div>
+    </div>
+
+    <div class="stats" id="summary"></div>
+
+    <div class="filters">
+        <div class="chips" id="box-tabs" role="tablist" aria-label="Boxes"></div>
+        <div class="filter-right">
+            <select class="select" id="cat-filter" aria-label="Category"><option value="">All categories</option></select>
+            <select class="select" id="sort" aria-label="Sort">
+                <option value="box">Group by box</option>
+                <option value="name">Name A–Z</option>
+                <option value="category">Category</option>
+                <option value="condition">Condition</option>
+                <option value="updated">Recently changed</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="result-count" id="result-count"></div>
+    <div class="list" id="results">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+</main>
+
+<nav class="bottom-nav" aria-label="Main">
+    <button class="nav-btn active" id="nav-home" onclick="goHome()"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#house"/></svg>Home</button>
+    <button class="nav-btn" id="nav-scan" onclick="openScanner()"><svg class="i" aria-hidden="true"><use id="nav-scan-use" href="/vendor/icons.svg#scan-line"/></svg><span id="nav-scan-label">Scan</span></button>
+    <button class="fab" onclick="openModal()" aria-label="Add item"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#plus"/></svg></button>
+    <button class="nav-btn" onclick="openHistory()"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#history"/></svg>History</button>
+    <button class="nav-btn" onclick="openOverlay('more-modal')"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#menu"/></svg>More</button>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="scanner" id="scanner" hidden>
+    <video id="scan-video" playsinline muted></video>
+    <div class="scan-frame"></div>
+    <button class="btn icon-btn scan-close" onclick="closeScanner()" aria-label="Close scanner"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#x"/></svg></button>
+    <p class="scan-hint" id="scan-hint">Point the camera at a box label</p>
+</div>
+
+<div class="offline-bar" id="offline-bar" hidden><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#wifi-off"/></svg>Offline · showing your last saved copy</div>
+
+<!-- Add / Edit -->
+<div class="modal-overlay" id="modal">
+<form class="modal" id="item-form" autocomplete="off">
+    <div class="sheet-handle"></div>
+    <div class="modal-head">
+        <h2 id="modal-title">Add item</h2>
+        <button type="button" class="btn icon-btn" onclick="closeOverlay('modal')" aria-label="Close"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#x"/></svg></button>
+    </div>
+    <div class="row">
+        <div class="field">
+            <label for="f-item">Item name</label>
+            <input class="input" type="text" id="f-item" placeholder="e.g. Raspberry Pi 4" required>
+        </div>
+        <div class="field">
+            <label for="f-qty">Qty</label>
+            <input class="input" type="number" id="f-qty" min="1" max="9999" step="1" value="1" inputmode="numeric">
+        </div>
+    </div>
+    <div class="dupes" id="dupes"></div>
+    <div class="row half">
+        <div class="field">
+            <label for="f-box">Box</label>
+            <select class="input" id="f-box"></select>
+        </div>
+        <div class="field">
+            <label for="f-cond">Condition</label>
+            <select class="input" id="f-cond">
+                <option value="Working">Working</option>
+                <option value="Broken">Broken</option>
+                <option value="Not Working">Not Working</option>
+                <option value="Spare">Spare</option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="f-cat">Category</label>
+        <input class="input" type="text" id="f-cat" list="cat-list" placeholder="e.g. Electronics">
+        <datalist id="cat-list"></datalist>
+    </div>
+    <div class="field">
+        <label for="f-notes">Notes</label>
+        <input class="input" type="text" id="f-notes" placeholder="Optional">
+    </div>
+    <div class="field">
+        <label for="f-tags">Extra search words</label>
+        <input class="input" type="text" id="f-tags" placeholder="Optional, e.g. charger adapter power">
+    </div>
+    <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeOverlay('modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="modal-save">Add item</button>
+    </div>
+</form>
+</div>
+
+<!-- Move -->
+<div class="modal-overlay" id="move-modal">
+<div class="modal">
+    <div class="sheet-handle"></div>
+    <div class="modal-head">
+        <h2 id="move-title">Move item</h2>
+        <button class="btn icon-btn" onclick="closeOverlay('move-modal')" aria-label="Close"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#x"/></svg></button>
+    </div>
+    <div class="move-grid" id="move-boxes"></div>
+</div>
+</div>
+
+<!-- Boxes -->
+<div class="modal-overlay" id="boxes-modal">
+<div class="modal wide">
+    <div class="sheet-handle"></div>
+    <div class="modal-head">
+        <h2>Boxes</h2>
+        <button class="btn icon-btn" onclick="closeOverlay('boxes-modal')" aria-label="Close"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#x"/></svg></button>
+    </div>
+    <p class="modal-sub">Edit a description, then tap outside the field to save. Only empty boxes can be deleted.</p>
+    <div id="boxes-list"></div>
+    <div class="section-title">Add a box</div>
+    <div class="row" style="grid-template-columns:90px 1fr auto;align-items:center">
+        <input class="input" type="number" id="new-box-id" min="1" max="999" placeholder="No.">
+        <input class="input" type="text" id="new-box-desc" placeholder="Description">
+        <button class="btn btn-primary" onclick="addBox()">Add</button>
+    </div>
+</div>
+</div>
+
+<!-- History -->
+<div class="modal-overlay" id="history-modal">
+<div class="modal wide">
+    <div class="sheet-handle"></div>
+    <div class="modal-head">
+        <h2>History</h2>
+        <div style="display:flex;gap:6px">
+            <button class="btn btn-soft btn-sm" onclick="undoFromHistory()"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#undo-2"/></svg>Undo last</button>
+            <button class="btn icon-btn" onclick="closeOverlay('history-modal')" aria-label="Close"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#x"/></svg></button>
+        </div>
+    </div>
+    <div id="history-list"></div>
+</div>
+</div>
+
+<!-- Export -->
+<div class="modal-overlay" id="export-modal">
+<div class="modal">
+    <div class="sheet-handle"></div>
+    <div class="modal-head">
+        <h2>Export</h2>
+        <button class="btn icon-btn" onclick="closeOverlay('export-modal')" aria-label="Close"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#x"/></svg></button>
+    </div>
+    <p class="modal-sub">Download a copy of everything in your inventory.</p>
+    <div class="menu-list">
+        <a class="menu-item" href="/api/export.csv"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#file-spreadsheet"/></svg>Spreadsheet (CSV)</a>
+        <a class="menu-item" href="/api/export.json"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#file-json"/></svg>data.json</a>
+    </div>
+</div>
+</div>
+
+<!-- More (phones) -->
+<div class="modal-overlay" id="more-modal">
+<div class="modal">
+    <div class="sheet-handle"></div>
+    <div class="menu-list">
+        <a class="menu-item get-app" href="/download/inventory.apk"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#download"/></svg>Download Android app</a>
+        <a class="menu-item" href="/print.html"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#printer"/></svg>Print labels<span class="count-badge labels-count" hidden></span></a>
+        <button class="menu-item" onclick="closeOverlay('more-modal'); openBoxes()"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#boxes"/></svg>Manage boxes</button>
+        <button class="menu-item" onclick="closeOverlay('more-modal'); openOverlay('export-modal')"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#download"/></svg>Export</button>
+        <button class="menu-item" onclick="toggleTheme()"><svg class="i" aria-hidden="true"><use class="theme-use" href="/vendor/icons.svg#moon"/></svg><span id="theme-label">Dark mode</span></button>
+        <button class="menu-item" onclick="closeOverlay('more-modal'); openOverlay('help-modal')"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#circle-help"/></svg>Help</button>
+    </div>
+</div>
+</div>
+
+<!-- Help -->
+<div class="modal-overlay" id="help-modal">
+<div class="modal wide help">
+    <div class="sheet-handle"></div>
+    <div class="modal-head">
+        <h2>How it works</h2>
+        <button class="btn icon-btn" onclick="closeOverlay('help-modal')" aria-label="Close"><svg class="i" aria-hidden="true"><use href="/vendor/icons.svg#x"/></svg></button>
+    </div>
+    <p>Everything saves to the server straight away and shows up on every device. Made a mistake? Tap <b>Undo</b> on the pop-up, or open <b>History</b>.</p>
+    <h3>Search</h3>
+    <p>Type any part of a name, category or note. Small typos still work (“fevikwik”, “micro usb cble”). Type <b>box 3</b> to jump to a box.</p>
+    <h3>Adding</h3>
+    <p>If something similar already exists, the form shows it so you can add <b>+1</b> instead of creating a duplicate. Scanning a box label opens that box.</p>
+    <h3>Labels</h3>
+    <p>The red number on <b>Labels</b> counts boxes whose contents changed since you last printed their label.</p>
+    <h3 class="get-app">Android app</h3>
+    <p class="get-app">Install the app from <a href="/app.html" style="color:var(--accent);font-weight:600">inventory.refurbindia.com/app.html</a> to scan labels with your camera and use it offline.</p>
+    <h3>Keyboard</h3>
+    <div class="kbd-grid">
+        <kbd class="kbd">/</kbd><span>Search (also Ctrl/⌘ + K)</span>
+        <kbd class="kbd">n</kbd><span>Add item</span>
+        <kbd class="kbd">Esc</kbd><span>Close pop-ups</span>
+    </div>
+</div>
+</div>
+
+<script>
+const ICONS = '/vendor/icons.svg';
+const COND_CLS = {Working: 'working', Broken: 'broken', 'Not Working': 'notworking', Spare: 'spare'};
+
+let boxes = [];
+let items = [];
+let activeBox = 0;
+let sortBy = 'box';
+let editingId = null;
+let movingId = null;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const icon = name => `<svg class="i" aria-hidden="true"><use href="${ICONS}#${name}"/></svg>`;
+const label = it => it.qty > 1 ? `${it.name} ×${it.qty}` : it.name;
+const itemById = id => items.find(i => i.id === id);
+const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
+
+async function api(method, url, body) {
+    let res;
+    try {
+        res = await fetch(url, {
+            method,
+            cache: 'no-store',
+            headers: {'Content-Type': 'application/json', 'X-Requested-With': 'inventory'},
+            body: body === undefined ? undefined : JSON.stringify(body)
+        });
+    } catch (e) {
+        throw new Error(navigator.onLine ? 'Could not reach the server. Please try again.' : 'You are offline. Changes need an internet connection.');
+    }
+    if (res.status === 401) { location.reload(); throw new Error('Signed out'); }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+    return data;
+}
+
+async function load() {
+    const data = await api('GET', '/api/data');
+    boxes = data.boxes;
+    items = data.items;
+    $('signout-btn').style.display = data.authRequired ? '' : 'none';
+    buildIndex();
+}
+
+async function reload() {
+    await load();
+    renderAll();
+}
+
+// Runs a change, reloads, and offers Undo. Returns the result, or undefined on error.
+async function mutate(request, message) {
+    try {
+        const result = await request();
+        await reload();
+        toast(typeof message === 'function' ? message(result) : message, true);
+        return result;
+    } catch (e) {
+        if (e.message !== 'Signed out') alert(e.message);
+    }
+}
+
+// ---------- theme ----------
+
+function applyThemeIcons() {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    document.querySelectorAll('.theme-use').forEach(u => u.setAttribute('href', `${ICONS}#${dark ? 'sun' : 'moon'}`));
+    $('theme-label').textContent = dark ? 'Light mode' : 'Dark mode';
+    document.querySelector('meta[name=theme-color]').setAttribute('content', dark ? '#09090b' : '#fafafa');
+}
+
+function toggleTheme() {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    const apply = () => {
+        document.documentElement.dataset.theme = next;
+        applyThemeIcons();
+    };
+    try { localStorage.setItem('inv_theme', next); } catch (e) {}
+    if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(apply);
+    else apply();
+}
+
+// ---------- search ----------
+
+function norm(s) {
+    return String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function lev(a, b, max) {
+    if (Math.abs(a.length - b.length) > max) return max + 1;
+    let prev = Array.from({length: b.length + 1}, (_, i) => i);
+    for (let i = 1; i <= a.length; i++) {
+        const cur = [i];
+        let rowMin = i;
+        for (let j = 1; j <= b.length; j++) {
+            const v = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+            cur.push(v);
+            if (v < rowMin) rowMin = v;
+        }
+        if (rowMin > max) return max + 1;
+        prev = cur;
+    }
+    return prev[b.length];
+}
+
+// Close spelling: the whole word, or (for longer words) a same-length slice of it
+function fuzzyIn(token, word) {
+    const max = token.length >= 7 ? 2 : token.length >= 4 ? 1 : 0;
+    if (!max) return false;
+    if (lev(token, word, max) <= max) return true;
+    if (token.length >= 4 && word.length > token.length + 1) {
+        for (let i = 0; i + token.length <= word.length; i++) {
+            if (lev(token, word.slice(i, i + token.length), max) <= max) return true;
+        }
+    }
+    return false;
+}
+
+function buildIndex() {
+    const pairs = w => w.slice(0, -1).map((x, i) => x + w[i + 1]); // "micro usb" also matches "microusb"
+    for (const it of items) {
+        const nameWords = norm(it.name).split(' ').filter(Boolean);
+        const otherWords = norm(`${it.category} ${it.notes} ${it.tags}`).split(' ').filter(Boolean);
+        it._name = nameWords.concat(pairs(nameWords));
+        it._other = otherWords.concat(pairs(otherWords));
+        it._compact = nameWords.join('') + ' ' + otherWords.join('');
+    }
+}
+
+function matchItem(it, tokens) {
+    let score = 0;
+    let fuzzy = false;
+    for (const t of tokens) {
+        if (it._name.includes(t)) score += 6;
+        else if (it._name.some(w => w.startsWith(t))) score += 5;
+        else if (it._other.some(w => w.startsWith(t))) score += 3;
+        else if (t.length >= 3 && it._compact.includes(t)) score += 2;
+        else if (it._name.some(w => fuzzyIn(t, w))) { score += 1.5; fuzzy = true; }
+        else if (it._other.some(w => fuzzyIn(t, w))) { score += 1; fuzzy = true; }
+        else return null;
+    }
+    return {score, fuzzy};
+}
+
+function parseQuery() {
+    let q = norm($('search').value);
+    let box = 0;
+    const m = /(?:^| )box ?(\d+)(?= |$)/.exec(q);
+    if (m) {
+        box = Number(m[1]);
+        q = (q.slice(0, m.index) + ' ' + q.slice(m.index + m[0].length)).trim();
+    }
+    return {tokens: q ? q.split(' ') : [], box};
+}
+
+function highlight(text, tokens) {
+    const useful = tokens.filter(t => t.length > 1).sort((a, b) => b.length - a.length);
+    if (!text || !useful.length) return esc(text);
+    const re = new RegExp(`(${useful.join('|')})`, 'gi');
+    return String(text).split(re).map((part, i) => i % 2 ? `<mark>${esc(part)}</mark>` : esc(part)).join('');
+}
+
+// ---------- filtering & sorting ----------
+
+const byText = (a, b) => String(a).localeCompare(String(b), undefined, {sensitivity: 'base'});
+const SORTS = {
+    name: (a, b) => byText(a.name, b.name),
+    category: (a, b) => byText(a.category, b.category) || byText(a.name, b.name),
+    condition: (a, b) => byText(a.condition, b.condition) || byText(a.name, b.name),
+    updated: (a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)),
+};
+
+function getFiltered() {
+    const {tokens, box} = parseQuery();
+    const boxFilter = box || activeBox;
+    const cat = $('cat-filter').value;
+    const rows = [];
+    for (const it of items) {
+        if (boxFilter && it.box !== boxFilter) continue;
+        if (cat && it.category !== cat) continue;
+        if (tokens.length) {
+            const m = matchItem(it, tokens);
+            if (m) rows.push({it, ...m});
+        } else {
+            rows.push({it, score: 0, fuzzy: false});
+        }
+    }
+    if (sortBy !== 'box') rows.sort((a, b) => SORTS[sortBy](a.it, b.it));
+    else if (tokens.length) rows.sort((a, b) => (a.fuzzy - b.fuzzy) || (b.score - a.score) || byText(a.it.name, b.it.name));
+    return {rows, tokens, filtered: tokens.length > 0 || !!cat || !!box};
+}
+
+// ---------- rendering ----------
+
+// Updates the list in place by key, so AutoAnimate can slide rows in, out and around.
+function reconcile(container, nodes) {
+    const existing = new Map();
+    for (const el of [...container.children]) {
+        if (el.dataset.key) existing.set(el.dataset.key, el);
+        else el.remove();
+    }
+    const tpl = document.createElement('template');
+    let prev = null;
+    for (const {key, html} of nodes) {
+        let el = existing.get(key);
+        if (el) {
+            existing.delete(key);
+            if (el._html !== html) {
+                tpl.innerHTML = html.trim();
+                const fresh = tpl.content.firstElementChild;
+                el.className = fresh.className;
+                el.innerHTML = fresh.innerHTML;
+                el._html = html;
+            }
+        } else {
+            tpl.innerHTML = html.trim();
+            el = tpl.content.firstElementChild;
+            el._html = html;
+        }
+        const want = prev ? prev.nextSibling : container.firstChild;
+        if (el !== want) container.insertBefore(el, want);
+        prev = el;
+    }
+    for (const el of existing.values()) el.remove();
+}
+
+function renderSummary(rows) {
+    const list = rows.map(r => r.it);
+    const pieces = list.reduce((n, i) => n + i.qty, 0);
+    const boxCount = new Set(list.map(i => i.box)).size;
+    const broken = list.filter(i => i.condition === 'Broken' || i.condition === 'Not Working').length;
+    const stat = (ic, name, value, tone = '') =>
+        `<div class="stat card ${tone}"><span class="stat-icon">${icon(ic)}</span><div style="min-width:0"><div class="stat-label">${name}</div><div class="num">${value}</div></div></div>`;
+    $('summary').innerHTML =
+        stat('list', 'Items', list.length) +
+        stat('layers', 'Pieces', pieces) +
+        stat('package', 'Boxes', boxCount) +
+        stat('triangle-alert', 'Not working', broken, broken ? 'bad' : '');
+    $('hero-sub').textContent = `${plural(items.length, 'item')} across ${plural(boxes.length, 'box', 'boxes')} · search, add and move things in seconds.`;
+}
+
+function renderBoxTabs() {
+    const counts = {};
+    items.forEach(i => { counts[i.box] = (counts[i.box] || 0) + 1; });
+    const chip = (id, name, count) =>
+        `<button class="chip box-tab ${activeBox === id ? 'active' : ''}" role="tab" aria-selected="${activeBox === id}" onclick="setBox(${id})"><span class="chip-label">${name}</span><span class="chip-count">${count}</span></button>`;
+    const tabs = $('box-tabs');
+    tabs.innerHTML = chip(0, 'All', items.length) + boxes.map(b => chip(b.id, `Box ${b.id}`, counts[b.id] || 0)).join('');
+    const active = tabs.querySelector('.active');
+    if (active && tabs.scrollWidth > tabs.clientWidth) {
+        tabs.scrollTo({left: active.offsetLeft - tabs.clientWidth / 2 + active.clientWidth / 2, behavior: 'smooth'});
+    }
+    $('nav-home').classList.toggle('active', !activeBox && !$('search').value);
+}
+
+function renderCatFilter() {
+    const sel = $('cat-filter');
+    const current = sel.value;
+    const cats = [...new Set(items.map(i => i.category).filter(Boolean))].sort(byText);
+    sel.innerHTML = '<option value="">All categories</option>' +
+        cats.map(c => `<option value="${esc(c)}" ${c === current ? 'selected' : ''}>${esc(c)}</option>`).join('');
+    $('cat-list').innerHTML = cats.map(c => `<option value="${esc(c)}">`).join('');
+}
+
+function renderBoxOptions() {
+    $('f-box').innerHTML = boxes.map(b => `<option value="${b.id}">Box ${b.id}${b.description ? ' — ' + esc(b.description) : ''}</option>`).join('');
+}
+
+function renderLabelsBadge() {
+    const n = boxes.filter(b => b.labelOutdated).length;
+    document.querySelectorAll('.labels-count').forEach(el => {
+        el.textContent = n || '';
+        el.hidden = !n;
+    });
+}
+
+function itemHtml(it, tokens, showBox) {
+    const cls = COND_CLS[it.condition] || 'working';
+    const sub = [
+        showBox ? `<a class="box-chip" href="#box=${it.box}">${icon('package')}Box ${it.box}</a>` : '',
+        it.category ? `<span>${highlight(it.category, tokens)}</span>` : '',
+        it.notes ? `<span class="notes">${highlight(it.notes, tokens)}</span>` : ''
+    ].filter(Boolean).join('<span class="dot-sep">·</span>');
+    return `<div class="item" data-key="item-${it.id}">
+        <div class="item-main">
+            <div class="item-name td-item">${highlight(it.name, tokens)}${it.qty > 1 ? `<span class="qty">×${it.qty}</span>` : ''}</div>
+            ${sub ? `<div class="item-sub">${sub}</div>` : ''}
+        </div>
+        <span class="badge ${cls}"><i class="dot"></i>${esc(it.condition)}</span>
+        <div class="item-actions actions-cell">
+            <div class="stepper">
+                <button class="btn step" title="One less" aria-label="One less" onclick="changeQty(${it.id}, -1)">${icon('minus')}</button>
+                <span class="step-val">${it.qty}</span>
+                <button class="btn step" title="One more" aria-label="One more" onclick="changeQty(${it.id}, 1)">${icon('plus')}</button>
+            </div>
+            <button class="btn icon-btn" title="Move to another box" aria-label="Move" onclick="openMove(${it.id})">${icon('arrow-right-left')}</button>
+            <button class="btn icon-btn" title="Edit" aria-label="Edit" onclick="openModal(${it.id})">${icon('pencil')}</button>
+            <button class="btn icon-btn danger" title="Delete" aria-label="Delete" onclick="deleteItem(${it.id})">${icon('trash-2')}</button>
+        </div>
+    </div>`;
+}
+
+function boxHeadHtml(b, count) {
+    return `<div class="box-head box-group" data-key="box-${b.id}">
+        <div class="box-title">
+            <span class="box-num">${b.id}</span>
+            <div style="min-width:0"><h2>Box ${b.id}</h2><div class="desc">${b.description ? esc(b.description) : '<span class="faint">No description</span>'}</div></div>
+        </div>
+        <div class="box-meta">
+            <span class="pill">${plural(count, 'item')}</span>
+            ${b.labelOutdated ? `<a class="pill warn" href="/print.html?boxes=${b.id}" title="Contents changed since this label was printed">${icon('printer')}Reprint</a>` : ''}
+            <button class="btn btn-soft btn-sm" onclick="openModal(null, ${b.id})">${icon('plus')}Add</button>
+        </div>
+    </div>`;
+}
+
+function emptyStateHtml(key, title, text, withClear) {
+    return `<div class="empty-state" data-key="${key}">
+        <div class="big">${icon(withClear ? 'search-x' : 'package-open')}</div>
+        <h3>${title}</h3><p>${text}</p>
+        ${withClear ? '<button class="btn btn-outline" onclick="clearFilters()">Clear search & filters</button>'
+                    : '<button class="btn btn-primary" onclick="openModal()">' + icon('plus') + 'Add item</button>'}
+    </div>`;
+}
+
+function renderList({rows, tokens, filtered}) {
+    const nodes = [];
+    if (filtered || sortBy !== 'box') {
+        $('result-count').textContent = filtered ? `${plural(rows.length, 'item')} found` : '';
+        if (!rows.length) nodes.push({key: 'none', html: emptyStateHtml('none', 'No items found', 'Try a different spelling, or clear the filters.', true)});
+        let sepShown = false;
+        for (const r of rows) {
+            if (r.fuzzy && !sepShown && sortBy === 'box') {
+                nodes.push({key: 'sep-fuzzy', html: '<div class="sep" data-key="sep-fuzzy">Similar spellings</div>'});
+                sepShown = true;
+            }
+            nodes.push({key: `item-${r.it.id}`, html: itemHtml(r.it, tokens, true)});
+        }
+    } else {
+        $('result-count').textContent = '';
+        const byBox = {};
+        for (const r of rows) (byBox[r.it.box] ||= []).push(r.it);
+        const shown = boxes.filter(b => activeBox ? b.id === activeBox : byBox[b.id]);
+        if (!shown.length) nodes.push({key: 'none', html: emptyStateHtml('none', 'No items yet', 'Add your first item to get started.', false)});
+        for (const b of shown) {
+            const list = byBox[b.id] || [];
+            nodes.push({key: `box-${b.id}`, html: boxHeadHtml(b, list.length)});
+            if (!list.length) nodes.push({key: `empty-${b.id}`, html: `<div class="empty-box" data-key="empty-${b.id}">${icon('package-open')}This box is empty</div>`});
+            for (const it of list) nodes.push({key: `item-${it.id}`, html: itemHtml(it, [], false)});
+        }
+    }
+    reconcile($('results'), nodes);
+}
+
+function refresh() {
+    const result = getFiltered();
+    renderSummary(result.rows);
+    renderList(result);
+    $('search-clear').hidden = !$('search').value;
+    $('search-kbd').hidden = !!$('search').value;
+}
+
+function renderAll() {
+    renderBoxTabs();
+    renderCatFilter();
+    renderBoxOptions();
+    renderLabelsBadge();
+    refresh();
+}
+
+function setBox(b) {
+    location.hash = b ? `box=${b}` : '';
+}
+
+function goHome() {
+    clearFilters();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function clearSearch() {
+    $('search').value = '';
+    refresh();
+    renderBoxTabs();
+    $('search').focus();
+}
+
+function clearFilters() {
+    $('search').value = '';
+    $('cat-filter').value = '';
+    $('sort').value = sortBy = 'box';
+    if (activeBox) setBox(0);
+    else { refresh(); renderBoxTabs(); }
+}
+
+// ---------- toast & undo ----------
+
+let toastTimer = null;
+function toast(message, withUndo) {
+    const t = $('toast');
+    t.innerHTML = `<span class="toast-icon">${icon('check')}</span><span class="msg">${esc(message)}</span>` +
+        (withUndo ? `<button class="btn btn-sm" onclick="undoLast()">${icon('undo-2')}Undo</button>` : '');
+    t.classList.remove('show');
+    void t.offsetWidth; // restart the entrance animation
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 7000);
+}
+
+async function undoLast() {
+    try {
+        const r = await api('POST', '/api/undo');
+        await reload();
+        toast(`Undone: ${r.undone}`, false);
+    } catch (e) {
+        if (e.message !== 'Signed out') toast(e.message, false);
+    }
+}
+
+// ---------- item actions ----------
+
+function changeQty(id, delta) {
+    const it = itemById(id);
+    if (!it) return;
+    if (it.qty + delta < 1) return deleteItem(id);
+    return mutate(() => api('PATCH', `/api/items/${id}`, {qty: it.qty + delta}), `${it.name}: now ×${it.qty + delta}`);
+}
+
+function deleteItem(id) {
+    const it = itemById(id);
+    if (!it || !confirm(`Delete "${label(it)}" from Box ${it.box}?`)) return;
+    return mutate(() => api('DELETE', `/api/items/${id}`), `Deleted ${label(it)}`);
+}
+
+function openModal(id = null, box = null) {
+    editingId = id;
+    const it = id ? itemById(id) : null;
+    let lastBox = null;
+    try { lastBox = Number(localStorage.getItem('inv_last_box')) || null; } catch (e) {}
+    const defaultBox = it?.box ?? box ?? (activeBox || lastBox || boxes[0]?.id);
+
+    $('modal-title').textContent = it ? 'Edit item' : (box ? `Add to Box ${box}` : 'Add item');
+    $('modal-save').textContent = it ? 'Save changes' : 'Add item';
+    $('f-item').value = it?.name ?? '';
+    $('f-qty').value = it?.qty ?? 1;
+    $('f-box').value = String(defaultBox ?? '');
+    $('f-cat').value = it?.category ?? '';
+    $('f-cond').value = it?.condition ?? 'Working';
+    $('f-notes').value = it?.notes ?? '';
+    $('f-tags').value = it?.tags ?? '';
+    $('dupes').innerHTML = '';
+    openOverlay('modal');
+    setTimeout(() => $('f-item').focus(), 60);
+}
+
+function showDuplicates() {
+    const tokens = norm($('f-item').value).split(' ').filter(t => t.length >= 2);
+    if (!tokens.length) { $('dupes').innerHTML = ''; return; }
+    const hits = items
+        .filter(i => i.id !== editingId)
+        .map(i => ({i, m: matchItem(i, tokens)}))
+        .filter(x => x.m)
+        .sort((a, b) => (a.m.fuzzy - b.m.fuzzy) || (b.m.score - a.m.score))
+        .slice(0, 4);
+    const add = Math.max(1, Number($('f-qty').value) || 1);
+    $('dupes').innerHTML = !hits.length ? '' :
+        `<div class="dupes-title">${icon('triangle-alert')}Already in your inventory</div>` +
+        hits.map(({i}) => `<div class="dupe"><span>${esc(label(i))} <span class="box-chip">Box ${i.box}</span></span>` +
+            (editingId ? '' : `<button type="button" class="btn btn-outline btn-sm" onclick="bumpExisting(${i.id})">+${add} to this</button>`) +
+            '</div>').join('');
+}
+
+async function bumpExisting(id) {
+    const it = itemById(id);
+    const add = Math.max(1, Number($('f-qty').value) || 1);
+    const r = await mutate(() => api('PATCH', `/api/items/${id}`, {qty: it.qty + add}), `${it.name}: now ×${it.qty + add}`);
+    if (r) closeOverlay('modal');
+}
+
+async function saveItem(e) {
+    e.preventDefault();
+    const id = editingId;
+    const body = {
+        name: $('f-item').value.trim(),
+        qty: Math.max(1, Math.floor(Number($('f-qty').value) || 1)),
+        box: Number($('f-box').value),
+        category: $('f-cat').value.trim(),
+        condition: $('f-cond').value,
+        notes: $('f-notes').value.trim(),
+        tags: $('f-tags').value.trim()
+    };
+    if (!body.name) { alert('Please enter an item name.'); return; }
+    if (!body.box) { alert('Please choose a box. Create one under “Boxes” first.'); return; }
+
+    if (!id) {
+        const same = items.find(i => i.box === body.box && norm(i.name) === norm(body.name) && i.condition === body.condition);
+        if (same && confirm(`"${same.name}" is already in Box ${same.box} (×${same.qty}).\n\nOK = add ${body.qty} to its quantity\nCancel = keep it as a separate line`)) {
+            const r = await mutate(() => api('PATCH', `/api/items/${same.id}`, {qty: same.qty + body.qty}), `${same.name}: now ×${same.qty + body.qty}`);
+            if (r) closeOverlay('modal');
+            return;
+        }
+    }
+
+    try { localStorage.setItem('inv_last_box', String(body.box)); } catch (err) {}
+    const r = id
+        ? await mutate(() => api('PATCH', `/api/items/${id}`, body), res => `Saved ${label(res)}`)
+        : await mutate(() => api('POST', '/api/items', body), res => `Added ${label(res)} to Box ${res.box}`);
+    if (r) closeOverlay('modal');
+}
+
+function openMove(id) {
+    movingId = id;
+    const it = itemById(id);
+    $('move-title').textContent = `Move ${label(it)}`;
+    $('move-boxes').innerHTML = boxes.map(b =>
+        `<button class="move-box" ${b.id === it.box ? 'disabled' : ''} onclick="doMove(${b.id})">
+            <span class="box-num">${b.id}</span>
+            <div><strong>Box ${b.id}${b.id === it.box ? ' · current' : ''}</strong><span>${esc(b.description) || '&nbsp;'}</span></div>
+        </button>`).join('');
+    openOverlay('move-modal');
+}
+
+async function doMove(box) {
+    const it = itemById(movingId);
+    const r = await mutate(() => api('PATCH', `/api/items/${it.id}`, {box}), `Moved ${label(it)} to Box ${box}`);
+    if (r) closeOverlay('move-modal');
+}
+
+// ---------- boxes ----------
+
+function openBoxes() {
+    renderBoxesPanel();
+    openOverlay('boxes-modal');
+}
+
+function renderBoxesPanel() {
+    const counts = {};
+    items.forEach(i => { counts[i.box] = (counts[i.box] || 0) + 1; });
+    $('boxes-list').innerHTML = boxes.map(b => `<div class="box-row">
+        <span class="box-num">${b.id}</span>
+        <input class="input" value="${esc(b.description)}" placeholder="Description" onchange="saveBoxDesc(${b.id}, this.value)">
+        <span class="muted">${plural(counts[b.id] || 0, 'item')}</span>
+        ${counts[b.id] ? '<span></span>' : `<button class="btn icon-btn danger" title="Delete box" aria-label="Delete box" onclick="deleteBox(${b.id})">${icon('trash-2')}</button>`}
+    </div>`).join('');
+}
+
+async function saveBoxDesc(id, description) {
+    if (await mutate(() => api('PATCH', `/api/boxes/${id}`, {description}), `Updated Box ${id}`)) renderBoxesPanel();
+}
+
+async function addBox() {
+    const id = Number($('new-box-id').value);
+    const description = $('new-box-desc').value.trim();
+    if (!id) { alert('Enter a box number.'); return; }
+    if (await mutate(() => api('POST', '/api/boxes', {id, description}), `Created Box ${id}`)) {
+        $('new-box-id').value = '';
+        $('new-box-desc').value = '';
+        renderBoxesPanel();
+    }
+}
+
+async function deleteBox(id) {
+    if (!confirm(`Delete empty Box ${id}?`)) return;
+    if (await mutate(() => api('DELETE', `/api/boxes/${id}`), `Deleted Box ${id}`)) renderBoxesPanel();
+}
+
+// ---------- history ----------
+
+async function openHistory() {
+    openOverlay('history-modal');
+    $('history-list').innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+    try {
+        const entries = await api('GET', '/api/history');
+        const when = iso => new Date(iso).toLocaleString([], {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'});
+        $('history-list').innerHTML = entries.length
+            ? entries.map(e => `<div class="hist ${e.undone ? 'undone' : ''}"><span class="hist-time">${when(e.at)}</span><span class="hist-text">${esc(e.summary)}${e.undone ? ' (undone)' : ''}</span></div>`).join('')
+            : '<p class="muted">No changes yet.</p>';
+    } catch (e) {
+        $('history-list').textContent = e.message;
+    }
+}
+
+async function undoFromHistory() {
+    await undoLast();
+    openHistory();
+}
+
+// ---------- overlays, hash, keys ----------
+
+function syncBodyLock() {
+    document.body.classList.toggle('locked', !!document.querySelector('.modal-overlay.open') || !$('scanner').hidden);
+}
+function openOverlay(id) {
+    $(id).classList.add('open');
+    syncBodyLock();
+}
+function closeOverlay(id) {
+    $(id).classList.remove('open');
+    if (id === 'modal') editingId = null;
+    syncBodyLock();
+}
+function closeAllOverlays() {
+    document.querySelectorAll('.modal-overlay.open').forEach(o => closeOverlay(o.id));
+    if (!$('scanner').hidden) closeScanner();
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => {
+    if (e.target === o) closeOverlay(o.id);
+}));
+
+// #box=3 opens Box 3 (used by QR labels); #box=3&add=1 also opens the add form
+function applyHash() {
+    const params = new URLSearchParams(location.hash.slice(1));
+    const box = parseInt(params.get('box'), 10);
+    activeBox = box >= 1 ? box : 0;
+    const q = params.get('q');
+    if (q !== null) $('search').value = q;
+    if (params.get('scan') === '1') {
+        history.replaceState(null, '', location.pathname);
+        setTimeout(openScanner, 300);
+    }
+    if (params.get('add') === '1') {
+        history.replaceState(null, '', activeBox ? `#box=${activeBox}` : location.pathname);
+        openModal(null, activeBox || null);
+    }
+}
+
+async function logout() {
+    try { await api('POST', '/api/logout'); } catch (e) {}
+    location.reload();
+}
+
+function measureTopbar() {
+    document.documentElement.style.setProperty('--top', `${$('topbar').offsetHeight}px`);
+}
+
+$('item-form').addEventListener('submit', saveItem);
+$('f-item').addEventListener('input', showDuplicates);
+$('search').addEventListener('input', () => { refresh(); $('nav-home').classList.toggle('active', !activeBox && !$('search').value); });
+$('cat-filter').addEventListener('change', refresh);
+$('sort').addEventListener('change', () => { sortBy = $('sort').value; refresh(); });
+window.addEventListener('hashchange', () => { applyHash(); renderBoxTabs(); refresh(); });
+window.addEventListener('resize', measureTopbar);
+
+// Pick up changes made on another device when this tab comes back into view
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !$('scanner').hidden) closeScanner(); // release the camera
+    if (!document.hidden && !document.querySelector('.modal-overlay.open')) reload().catch(() => {});
+});
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeAllOverlays(); return; }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); $('search').focus(); $('search').select(); return; }
+    const typing = ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName);
+    if (typing || e.ctrlKey || e.metaKey || e.altKey || document.querySelector('.modal-overlay.open')) return;
+    if (e.key === '/') { e.preventDefault(); $('search').focus(); }
+    if (e.key === 'n') { e.preventDefault(); openModal(); }
+});
+
+// ---------- QR scanner, offline, app install ----------
+
+const SCAN_HINT = 'Point the camera at a box label';
+let scanStream = null;
+let scanTimer = null;
+
+const canScan = () => 'BarcodeDetector' in window && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+
+function setupScanButtons() {
+    if (canScan()) {
+        $('scan-btn-top').hidden = false;
+        return;
+    }
+    // No camera scanning on this device (e.g. desktop or iPhone): the bottom bar shows Labels instead
+    $('nav-scan').onclick = () => { location.href = '/print.html'; };
+    $('nav-scan-use').setAttribute('href', `${ICONS}#printer`);
+    $('nav-scan-label').textContent = 'Labels';
+}
+
+// Accepts new labels (…/#box=3), old GitHub Pages labels (…index.html#box=3) and plain "Box 3"
+function boxFromCode(text) {
+    const m = /[#&?]box=(\d+)/i.exec(text) || /^\s*box\s*(\d+)\s*$/i.exec(text);
+    const n = m ? Number(m[1]) : 0;
+    return boxes.some(b => b.id === n) ? n : 0;
+}
+
+async function openScanner() {
+    if (!canScan()) { toast('Scanning works in the Android app or Chrome on Android', false); return; }
+    let detector;
+    try { detector = new BarcodeDetector({formats: ['qr_code']}); }
+    catch (e) { toast('This device cannot scan QR codes', false); return; }
+
+    $('scan-hint').textContent = SCAN_HINT;
+    $('scanner').hidden = false;
+    syncBodyLock();
+    try {
+        scanStream = await navigator.mediaDevices.getUserMedia({video: {facingMode: {ideal: 'environment'}}, audio: false});
+    } catch (e) {
+        closeScanner();
+        toast('Allow camera access to scan box labels', false);
+        return;
+    }
+    if ($('scanner').hidden) { closeScanner(); return; } // closed while the permission prompt was open
+
+    const video = $('scan-video');
+    video.srcObject = scanStream;
+    await video.play().catch(() => {});
+
+    const tick = async () => {
+        if (!scanStream) return;
+        try {
+            if (video.readyState >= 2) {
+                const codes = await detector.detect(video);
+                for (const code of codes) {
+                    const box = boxFromCode(code.rawValue);
+                    if (!box) continue;
+                    if (navigator.vibrate) navigator.vibrate(40);
+                    closeScanner();
+                    $('search').value = '';
+                    if (activeBox === box) refresh();
+                    setBox(box);
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                    toast(`Opened Box ${box}`, false);
+                    return;
+                }
+                if (codes.length) $('scan-hint').textContent = 'That QR code is not one of your box labels';
+            }
+        } catch (e) {}
+        scanTimer = setTimeout(tick, 180);
+    };
+    tick();
+}
+
+function closeScanner() {
+    clearTimeout(scanTimer);
+    scanTimer = null;
+    if (scanStream) scanStream.getTracks().forEach(t => t.stop());
+    scanStream = null;
+    $('scan-video').srcObject = null;
+    $('scanner').hidden = true;
+    syncBodyLock();
+}
+
+function updateOnlineState() {
+    $('offline-bar').hidden = navigator.onLine;
+}
+window.addEventListener('online', () => { updateOnlineState(); reload().catch(() => {}); });
+window.addEventListener('offline', updateOnlineState);
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+}
+
+// Opened from the Android app? (it starts at /?source=app) Then hide the download links.
+function markInApp() {
+    let inApp = document.referrer.indexOf('android-app://') === 0 || new URLSearchParams(location.search).get('source') === 'app';
+    try {
+        if (inApp) sessionStorage.setItem('inv_in_app', '1');
+        inApp = inApp || sessionStorage.getItem('inv_in_app') === '1';
+    } catch (e) {}
+    if (inApp) document.querySelectorAll('.get-app').forEach(el => { el.hidden = true; });
+    return inApp;
+}
+
+// Android phone in a normal browser: offer the app with a one-tap download
+function setupAppBanner(inApp) {
+    let dismissed = false;
+    try { dismissed = localStorage.getItem('inv_app_banner') === 'dismissed'; } catch (e) {}
+    $('app-banner').hidden = inApp || dismissed || !/Android/i.test(navigator.userAgent);
+}
+
+function dismissAppBanner() {
+    $('app-banner').hidden = true;
+    try { localStorage.setItem('inv_app_banner', 'dismissed'); } catch (e) {}
+}
+
+(async function init() {
+    setupAppBanner(markInApp());
+    applyThemeIcons();
+    measureTopbar();
+    setupScanButtons();
+    updateOnlineState();
+    try {
+        await load();
+    } catch (e) {
+        if (e.message !== 'Signed out') $('results').innerHTML = `<div class="empty-state"><h3>Could not load</h3><p>${esc(e.message)}</p></div>`;
+        return;
+    }
+    $('results').innerHTML = '';
+    applyHash();
+    renderAll();
+    // Smooth add / remove / reorder animations for the list
+    import('/vendor/auto-animate.mjs')
+        .then(m => m.default($('results'), {duration: 200, easing: 'cubic-bezier(.2,.8,.2,1)'}))
+        .catch(() => {});
+})();
+</script>
+
+</body>
+</html>

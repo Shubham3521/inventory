@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.refurbindia.inventory",
+      "sha256_cert_fingerprints": [
+        "C3:06:AF:07:01:EF:05:7C:B4:F6:B4:D0:0A:34:AB:C4:24:F9:A6:06:35:2D:E1:7A:05:B7:61:39:DC:F1:4B:B9"
+      ]
+    }
+  }
+]

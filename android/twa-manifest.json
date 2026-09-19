@@ -1,0 +1,65 @@
+{
+  "packageId": "com.refurbindia.inventory",
+  "host": "inventory.refurbindia.com",
+  "name": "Home Inventory",
+  "launcherName": "Inventory",
+  "display": "standalone",
+  "themeColor": "#6366F1",
+  "themeColorDark": "#09090B",
+  "navigationColor": "#FFFFFF",
+  "navigationColorDark": "#09090B",
+  "navigationDividerColor": "#E4E4E7",
+  "navigationDividerColorDark": "#27272A",
+  "backgroundColor": "#6366F1",
+  "enableNotifications": false,
+  "startUrl": "/?source=app",
+  "iconUrl": "https://inventory.refurbindia.com/icons/icon-512.png",
+  "maskableIconUrl": "https://inventory.refurbindia.com/icons/maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "/home/shubhagu/Keys/inventory-app/android.keystore",
+    "alias": "inventory"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Add item",
+      "shortName": "Add",
+      "url": "https://inventory.refurbindia.com/#add=1",
+      "chosenIconUrl": "https://inventory.refurbindia.com/icons/icon-192.png"
+    },
+    {
+      "name": "Scan box label",
+      "shortName": "Scan",
+      "url": "https://inventory.refurbindia.com/#scan=1",
+      "chosenIconUrl": "https://inventory.refurbindia.com/icons/icon-192.png"
+    }
+  ],
+  "generatorApp": "unknown",
+  "webManifestUrl": "https://inventory.refurbindia.com/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://inventory.refurbindia.com/",
+  "minSdkVersion": 21,
+  "orientation": "portrait",
+  "fingerprints": [
+    {
+      "name": "upload",
+      "value": "C3:06:AF:07:01:EF:05:7C:B4:F6:B4:D0:0A:34:AB:C4:24:F9:A6:06:35:2D:E1:7A:05:B7:61:39:DC:F1:4B:B9"
+    }
+  ],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "",
+  "displayOverride": [],
+  "appVersion": "1.0.0"
+}

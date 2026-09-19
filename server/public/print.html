@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Box Labels — Print</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    margin:0;
+    padding:20px;
+}
+
+.page{
+    page-break-after:always;
+    border:2px solid #000;
+    border-radius:10px;
+    padding:20px 25px;
+    max-width:700px;
+    margin:0 auto 30px;
+}
+
+.page:last-child{page-break-after:avoid}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    border-bottom:3px solid #000;
+    padding-bottom:12px;
+    margin-bottom:15px;
+}
+
+.header-left{flex:1}
+
+.box-num{
+    font-size:36px;
+    font-weight:bold;
+}
+
+.box-desc{
+    font-size:13px;
+    color:#444;
+    margin-top:4px;
+}
+
+.qr{
+    width:120px;
+    height:120px;
+    margin-left:15px;
+    flex-shrink:0;
+}
+
+.item-count{
+    font-size:13px;
+    margin-bottom:12px;
+    color:#333;
+}
+
+.scan-hint{
+    font-size:10px;
+    color:#888;
+    text-align:right;
+    margin-top:2px;
+}
+
+.items{
+    column-count:2;
+    column-gap:20px;
+    font-size:13px;
+    line-height:1.8;
+}
+
+.item{
+    break-inside:avoid;
+    padding:1px 0;
+}
+
+.item-num{
+    display:inline-block;
+    width:22px;
+    font-weight:bold;
+    color:#555;
+    text-align:right;
+    margin-right:4px;
+}
+
+.cond{
+    font-size:11px;
+    font-weight:bold;
+    margin-left:3px;
+}
+
+.cond-broken{color:#c00}
+.cond-notworking{color:#c60}
+.cond-spare{color:#888}
+
+.note{
+    font-size:11px;
+    color:#666;
+    font-style:italic;
+}
+
+.footer{
+    border-top:1px solid #999;
+    margin-top:15px;
+    padding-top:8px;
+    font-size:11px;
+    color:#888;
+    text-align:center;
+}
+
+@media print{
+    body{padding:0}
+    .page{border:2px solid #000;box-shadow:none;margin:0 auto;max-width:100%}
+    .no-print,.page.skip{display:none}
+}
+
+@media screen{
+    .controls{
+        max-width:700px;
+        margin:0 auto 20px;
+        text-align:center;
+        font-size:14px;
+    }
+    .controls a{color:#0d6efd;text-decoration:none}
+    .filters{margin:12px 0;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .print-btn,.mark-btn{
+        padding:10px 24px;
+        font-size:15px;
+        font-weight:bold;
+        color:#fff;
+        border:none;
+        border-radius:8px;
+        cursor:pointer;
+        margin:4px;
+    }
+    .print-btn{background:#0d6efd}
+    .mark-btn{background:#28a745}
+    .print-btn:hover,.mark-btn:hover{opacity:.85}
+    #status{margin-top:8px;color:#28a745;min-height:18px}
+    .page-ctl{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+        flex-wrap:wrap;
+        font-size:13px;
+        background:#f4f6f8;
+        margin:-20px -25px 15px;
+        padding:8px 25px;
+        border-radius:8px 8px 0 0;
+        border-bottom:1px solid #ddd;
+    }
+    .st{color:#28a745}
+    .st.changed{color:#c60;font-weight:bold}
+    .page.skip{opacity:.35}
+    .empty{text-align:center;color:#555;padding:40px}
+}
+</style>
+
+</head>
+<body>
+
+<div class="no-print controls">
+    <a href="/">&larr; Back to inventory</a>
+    <div class="filters">
+        <label><input type="radio" name="show" value="changed" checked> Only labels that need reprinting</label>
+        <label><input type="radio" name="show" value="all"> All boxes</label>
+    </div>
+    <button class="print-btn" onclick="window.print()">Print selected labels</button>
+    <button class="mark-btn" onclick="markPrinted()">Mark selected as printed</button>
+    <div id="status"></div>
+</div>
+
+<div id="pages"></div>
+
+<script>
+let data = null;
+let filter = 'changed';
+const onlyParam = new URLSearchParams(location.search).get('boxes');
+let onlyIds = onlyParam ? onlyParam.split(',').map(Number) : null;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = iso => new Date(iso).toLocaleString([], {day: 'numeric', month: 'short', year: 'numeric'});
+
+function condTag(cond) {
+    if (cond === 'Broken') return ' <span class="cond cond-broken">[BROKEN]</span>';
+    if (cond === 'Not Working') return ' <span class="cond cond-notworking">[NOT WORKING]</span>';
+    if (cond === 'Spare') return ' <span class="cond cond-spare">[SPARE]</span>';
+    return '';
+}
+
+async function load() {
+    const res = await fetch('/api/data', {cache: 'no-store'});
+    if (res.status === 401) { location.reload(); return; }
+    data = await res.json();
+}
+
+function render() {
+    const pages = $('pages');
+    pages.innerHTML = '';
+    const shown = data.boxes.filter(b => onlyIds ? onlyIds.includes(b.id) : (filter === 'all' || b.labelOutdated));
+
+    if (!shown.length) {
+        pages.innerHTML = '<p class="no-print empty">All labels are up to date. <a href="#" onclick="setFilter(\'all\');return false">Show all boxes</a></p>';
+        return;
+    }
+
+    for (const b of shown) {
+        const items = data.items
+            .filter(i => i.box === b.id)
+            .sort((x, y) => x.name.localeCompare(y.name, undefined, {sensitivity: 'base'}));
+        const selected = onlyIds ? onlyIds.includes(b.id) : true;
+        const status = !b.labelPrintedAt ? 'Never printed'
+            : b.labelOutdated ? `Changed since last print (${fmt(b.labelPrintedAt)})`
+            : `Up to date (printed ${fmt(b.labelPrintedAt)})`;
+
+        const page = document.createElement('div');
+        page.className = 'page' + (selected ? '' : ' skip');
+        page.dataset.box = b.id;
+        page.innerHTML = `
+            <div class="no-print page-ctl">
+                <label><input type="checkbox" ${selected ? 'checked' : ''} onchange="this.closest('.page').classList.toggle('skip', !this.checked)"> Print this label</label>
+                <span class="st ${b.labelOutdated ? 'changed' : ''}">${esc(status)}</span>
+            </div>
+            <div class="header">
+                <div class="header-left">
+                    <div class="box-num">BOX ${b.id}</div>
+                    <div class="box-desc">${esc(b.description)}</div>
+                </div>
+                <img class="qr" src="/qr/${b.id}.svg" alt="QR code for Box ${b.id}">
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="item-count">${items.length} items (A-Z)</div>
+                <div class="scan-hint">Scan to open &#8599;</div>
+            </div>
+            <div class="items">${items.map((it, n) => `
+                <div class="item"><span class="item-num">${n + 1}.</span> ${esc(it.name)}${it.qty > 1 ? ` ×${it.qty}` : ''}${condTag(it.condition)}${it.notes ? ` <span class="note">— ${esc(it.notes)}</span>` : ''}</div>`).join('')}
+            </div>
+            <div class="footer">Home Inventory — Box ${b.id}</div>`;
+        pages.appendChild(page);
+    }
+}
+
+function setFilter(value) {
+    filter = value;
+    document.querySelector(`input[name=show][value=${value}]`).checked = true;
+    render();
+}
+
+async function markPrinted() {
+    const ids = [...document.querySelectorAll('.page:not(.skip)')].map(p => Number(p.dataset.box));
+    if (!ids.length) { alert('No labels selected.'); return; }
+    const res = await fetch('/api/labels/printed', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-Requested-With': 'inventory'},
+        body: JSON.stringify({boxes: ids})
+    });
+    if (!res.ok) { alert('Could not save. Please try again.'); return; }
+    await load();
+    render();
+    $('status').textContent = `Marked Box ${ids.join(', ')} as printed.`;
+}
+
+document.querySelectorAll('input[name=show]').forEach(r => r.addEventListener('change', () => { onlyIds = null; setFilter(r.value); }));
+
+window.addEventListener('afterprint', () => {
+    if (document.querySelector('.page:not(.skip)') && confirm('Did the labels print OK? Mark them as printed?')) markPrinted();
+});
+
+(async function init() {
+    await load();
+    if (!data) return;
+    if (onlyIds) filter = 'all';
+    setFilter(filter);
+})();
+</script>
+
+</body>
+</html>
